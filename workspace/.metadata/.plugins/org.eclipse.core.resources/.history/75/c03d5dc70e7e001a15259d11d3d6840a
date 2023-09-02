@@ -1,0 +1,91 @@
+package com.example.izakaya.controller;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import com.example.izakaya.util.Constants;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class IzakayaIndexControllerTests {
+
+    private MockMvc mockMvc;
+    
+    @InjectMocks
+    private IzakayaIndexController target;
+    
+    @InjectMocks
+    MockHttpSession session;
+
+    @Before
+    public void setUp() throws Exception {
+        mockMvc = MockMvcBuilders.standaloneSetup(target).build();
+    } 
+
+    /**
+     * indexのテスト.
+     * @throws Exception
+     */
+    @Test
+    public void testIndex() throws Exception {
+        mockMvc.perform(get(Constants.URL_INDEX))
+            .andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_INDEX));
+    }
+    
+    /**
+     * showHeadのテスト.
+     * @throws Exception
+     */
+    @Test
+    public void testShowHead() throws Exception {
+        mockMvc.perform(get(Constants.URL_INDEX + Constants.URL_HEAD))
+            .andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_HEAD));
+    }
+    
+    /**
+     * showMenuofTopのテスト.
+     * @throws Exception
+     */
+    @Test
+    public void testShowMenuofTop() throws Exception {
+        mockMvc.perform(get(Constants.URL_INDEX + Constants.URL_MENU_TOP))
+            .andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_MENU_TOP));
+    }
+    
+    /**
+     * showMenuOfLoginのテスト.
+     * @throws Exception
+     */
+    @Test
+    public void testShowMenuOfLogin() throws Exception {
+        mockMvc.perform(get(Constants.URL_INDEX + Constants.URL_MENU_LOGIN))
+            .andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_MENU_LOGIN));
+        
+        mockMvc.perform(get(Constants.URL_INDEX + Constants.URL_MENU_LOGIN))
+        .andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_MENU_LOGIN));
+    }
+    
+    /**
+     * shouMainのテスト.
+     * @throws Exception
+     */
+    @Test
+    public void testShouMain() throws Exception {
+        mockMvc.perform(get(Constants.URL_INDEX + Constants.URL_MAIN))
+            .andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_MAIN));
+    }
+    
+    
+
+}

@@ -1,0 +1,14 @@
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="/css/common.css" th:href="@{/css/common.css}" rel="stylesheet"></link>
+    </head>
+    <body>
+    <div>
+    	<iframe id="iframeTop" name="iframeTop" frameborder="0" src="view/top.html"></iframe>
+    	<iframe id="iframeLeft" name="iframeLeft" frameborder="0" src="view/left.html"></iframe>
+    	<iframe id="iframeContent" name="iframeContent" frameborder="0" src="view/content.html"></iframe>
+	</div>
+    </body>
+
+</html>

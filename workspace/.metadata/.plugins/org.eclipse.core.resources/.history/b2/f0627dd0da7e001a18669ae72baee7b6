@@ -1,0 +1,59 @@
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="/css/common.css" th:href="@{/css/common.css}" rel="stylesheet"></link>
+    </head>
+    <body class="body-all">
+        <div>
+            <table class="table-style">
+                <tr>
+                    <th>
+                        <span>番号</span>
+                    </th>
+                    <th>
+                        <span>店名</span>
+                    </th>
+                    <th>
+                        <span>住所</span>
+                    </th>
+                    <th>
+                        <span>地域名</span>
+                    </th>
+                    <th>
+                        <span>ジャンル</span>
+                    </th>
+                    <th>
+                        <span>最大人数</span>
+                    </th>
+                    <th>
+                        <span>料金</span>
+                    </th>
+                    <th>
+                        <span>開店時間</span>
+                    </th>
+                    <th>
+                        <span>閉店時間</span>
+                    </th>
+                    <th>
+                        <span>休日</span>
+                    </th>
+                	 <th>
+                    </th>
+                </tr>
+                <tr th:each="izakaya,izakayaStat : ${izakayaListForm.izakayaList}">
+                	<td th:text="${izakayaStat.index + 1}"></td>
+					<td th:text="${izakaya.name}"></td>
+					<td th:text="${izakaya.address}"></td>
+					<td th:text="${T(com.example.izakaya.util.Area).getEnumFromNo(izakaya.area).name}"></td>
+					<td th:text="${T(com.example.izakaya.util.Genre).getEnumFromNo(izakaya.genre).name}"></td>
+					<td th:text="${izakaya.max_num_of_people}"></td>
+					<td th:text="${izakaya.price}"></td>
+					<td th:text="${izakaya.opening_time}"></td>
+					<td th:text="${izakaya.closing_time}"></td>
+					<td th:text="${izakaya.holiday}"></td>
+					<td><a th:href="@{${T(com.example.izakaya.util.Constants).URL_SEARCH + T(com.example.izakaya.util.Constants).URL_TO_IZAKAYA_DETAIL}(izakayaId=${izakaya.id})}" target="main">詳細ページへ</a></td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>

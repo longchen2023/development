@@ -1,0 +1,85 @@
+package com.example.izakaya.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.izakaya.dao.CommmentManageDao;
+import com.example.izakaya.dao.IzakayaManageDao;
+import com.example.izakaya.dao.UserInfoManageDao;
+import com.example.izakaya.entity.CommentInfo;
+import com.example.izakaya.entity.IzakayaInfo;
+import com.example.izakaya.model.IzakayaSearchForm;
+
+/**
+ * 検索サービス.
+ * 
+ * @author 双江
+ *
+ */
+@Service
+public class IzakayaSearchService {
+
+	@Autowired
+	IzakayaManageDao izakayaManageDao;
+	@Autowired
+	CommmentManageDao commmentManageDao;
+	@Autowired
+	UserInfoManageDao userInfoManageDao;
+	
+	
+	/**
+	 * 居酒屋の一覧情報を取得する(conditions).
+	 * @return 居酒屋の一覧情報
+	 */
+	public List<IzakayaInfo> getIzakayaListBySearchForm(IzakayaSearchForm izakayaSearchForm){
+		
+		//居酒屋の一覧情報を取得する
+		List<IzakayaInfo> resultList = izakayaManageDao.selectIzakayaListBySearchForm(izakayaSearchForm.getReservationNums(), izakayaSearchForm.getMinAmount(), izakayaSearchForm.getMaxAmount(), izakayaSearchForm.getArea(), izakayaSearchForm.getGenre());
+		if(resultList == null) {
+			resultList = new ArrayList<IzakayaInfo>();
+		}
+		return resultList;
+	}
+	
+	/**
+	 * 居酒屋の一覧情報を取得する(all).
+	 * @return 居酒屋の一覧情報
+	 */
+	public List<IzakayaInfo> getIzakayaList(){
+		
+		//居酒屋の一覧情報を取得する
+		List<IzakayaInfo> resultList =  izakayaManageDao.selectIzakayaList();
+		if(resultList == null) {
+			resultList = new ArrayList<IzakayaInfo>();
+		}
+		return resultList;
+	}
+	
+	/**
+	 * idより、居酒屋の情報を取得する.
+	 * @return 居酒屋の情報
+	 */
+	public IzakayaInfo getIzakayaById(String id){
+		
+		//居酒屋の情報を取得する
+		final IzakayaInfo izakayaInfo = izakayaManageDao.selectIzakayaById(id);
+		return izakayaInfo;
+	}
+	
+	/**
+	 * 居酒屋idより、居酒屋のコメント情報を取得する.
+	 * @return 居酒屋のコメント情報
+	 */
+	public List<CommentInfo> getIzakayaCommentById(String id){
+		
+		//居酒屋の情報を取得する
+		List<CommentInfo> comments = commmentManageDao.findByIzakayaId(id);
+		if(comments == null) {
+			comments = new ArrayList<CommentInfo>();
+		}
+		return comments;
+	}
+}

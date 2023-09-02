@@ -1,0 +1,14 @@
+$(document).ready(function(){
+	  $("li").click(function(){
+		  var x = window.parent.document.getElementById("menu2");  
+          var right = (x.contentWindow || x.contentDocument);  
+          if(right.document){  
+              right = right.document;  
+          }
+          alert(right.getElementsByTagName("li").value);
+		  $("li").each(function(index){
+		        $(this).removeClass("active");
+		      })   
+		  $(this).addClass("active");
+	  });  
+});

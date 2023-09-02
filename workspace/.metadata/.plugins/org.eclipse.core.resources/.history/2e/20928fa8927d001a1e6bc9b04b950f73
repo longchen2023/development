@@ -1,0 +1,76 @@
+package com.example.izakaya.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import com.example.izakaya.entity.CommentInfo;
+import com.example.izakaya.entity.UserInfo;
+
+/**
+ * コメント情報管理Dao.
+ * @author 双江
+ *
+ */
+@Mapper
+public interface  CommmentManageDao {
+
+	/**
+	 * idより、居酒屋コメント情報を取得する.
+	 * @param id
+	 * @return
+	 */
+	 @Select("select c.*, u.name as user_name from "
+	 		+ "comment_info c "
+	 		+ "left join "
+	 		+ "user_info u  on c.user_id = u.id "
+	 		+ "where c.izakaya_id = #{id}")
+	 List<CommentInfo> findByIzakayaId(@Param("id")String id);
+	 
+	 /**
+	  * idより、居酒屋コメント情報を削除する.
+	  * @param id
+	  * @return
+	  */
+	 @Delete("delete from comment_info where izakaya_id = #{id}")
+	 int deleteByIzakayaId(@Param("id")String id);
+	 
+	 /**
+	  * 居酒屋コメント情報を登録する.
+	  * @param id
+	  * @param content
+	  * @param assessment
+	  * @param valid_flag
+	  * @param izakaya_id
+	  * @param user_id
+	  * @param register_time
+	  * @param update_time
+	  * @return
+	  */
+	 @Insert({ "insert into comment_info("
+				+ "id, "
+				+ "content, "
+				+ "assessment, "
+				+ "valid_flag, "
+				+ "izakaya_id, "
+				+ "user_id, "
+				+ "register_time, "
+				+ "update_time "
+				+ "values("
+				+ "#{id,jdbcType=NUMERIC}, "
+				+ "#{content,jdbcType=VARCHAR}, "
+				+ "#{assessment,jdbcType=VARCHAR}, "
+				+ "#{valid_flag,jdbcType=VARCHAR}, "
+				+ "#{izakaya_id,jdbcType=NUMERIC}, "
+				+ "#{user_id,jdbcType=VARCHAR}, "
+				+ "#{register_time,jdbcType=VARCHAR}, "
+				+ "#{update_time,jdbcType=VARCHAR}) "
+	 })
+	 int insertIzakayaCommentInfo(@Param("id")String id, @Param("content")String content, @Param("assessment")String assessment,
+			 @Param("valid_flag")String valid_flag, @Param("izakaya_id")String izakaya_id, @Param("user_id")String user_id,
+			 @Param("register_time")String register_time, @Param("update_time")String update_time);
+}

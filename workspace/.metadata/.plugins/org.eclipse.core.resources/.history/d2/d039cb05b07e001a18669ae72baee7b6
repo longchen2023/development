@@ -1,0 +1,28 @@
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="/css/common.css" th:href="@{/css/common.css}" rel="stylesheet"></link>
+    </head>
+    <body class="body-all body-menu2">
+        <div>
+            <table border="1" class="align-center">
+                <tr class="align-right table_tr-color-blue">
+                    <td>
+                        <span>番号</span>
+                    </td>
+                    <td class="table_td-width-200">
+                        <span>店名</span>
+                    </td>
+                    <td>
+                        <span>操作</span>
+                    </td>
+                </tr>
+				<tr class="align-right" th:each="izakaya,izakayaStat : ${izakayaListForm.izakayaList}">
+					<td th:text="${izakayaStat.index + 1}"></td>
+					<td th:text="${izakaya.name}"></td>
+					<td><a th:href="@{${T(com.example.izakaya.util.Constants).URL_MANAGE + T(com.example.izakaya.util.Constants).URL_TO_IZAKAYA_COMMENT_DELETE}(izakayaId=${izakaya.id})}" target="main">コメントの削除</a></td>
+				</tr>
+            </table>
+        </div>
+    </body>
+</html>

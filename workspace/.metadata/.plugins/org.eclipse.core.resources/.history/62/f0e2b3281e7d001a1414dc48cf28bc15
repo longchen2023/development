@@ -1,0 +1,14 @@
+package com.example.izakaya.service;
+
+import org.springframework.stereotype.Service;
+
+/**
+ * 検索サービス.
+ * 
+ * @author 双江
+ *
+ */
+@Service
+public class IzakayaSearchService {
+
+}

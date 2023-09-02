@@ -1,0 +1,90 @@
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="/css/common.css" th:href="@{/css/common.css}" rel="stylesheet"></link>
+    </head>
+    <body class="body-all body-menu2">
+        <div>
+            <th:block th:if="${izakayaRegisterError == true}>
+            <h3 class="align-center" th:text="#{loginNotExistError}"/>
+            </th:block>
+            <th:block th:if="${izakayaRegisterError == false}>
+            <h3 class="align-center" th:text="#{loginNotExistError}"/>
+            </th:block>
+        </div>
+        <div>
+            <table border="1" class="align-center table_all-width">
+                <tr class="align-right table_tr-color-blue">
+                    <td>
+                        <span>店名</span>
+                    </td>
+                    <td>
+                        <span>電話番号</span>
+                    </td>
+                    <td>
+                        <span>住所</span>
+                    </td>
+                    <td>
+                        <span>地域名</span>
+                    </td>
+                    <td>
+                        <span>ジャンル</span>
+                    </td>
+                    <td>
+                        <span>最大人数</span>
+                    </td>
+                    <td>
+                        <span>料金</span>
+                    </td>
+                    <td>
+                        <span>開店時間</span>
+                    </td>
+                    <td>
+                        <span>閉店時間</span>
+                    </td>
+                    <td>
+                        <span>休日</span>
+                    </td>
+                    <td>
+                        <span>ホームページ</span>
+                    </td>
+                </tr>
+                <tr class="align-right">
+                    <td>
+                        <span>魚居酒屋</span>
+                    </td>
+                    <td>
+                        <span>080-3231-1111</span>
+                    </td>
+                    <td>
+                        <span>越谷レイクタウン</span>
+                    </td>
+                    <td>
+                        <span>埼玉県</span>
+                    </td>
+                    <td>
+                        <span>和室</span>
+                    </td>
+                    <td>
+                        <span>30</span>
+                    </td>
+                    <td>
+                        <span>4500</span>
+                    </td>
+                    <td>
+                        <span>9:00</span>
+                    </td>
+                    <td>
+                        <span>20:00</span>
+                    </td>
+                    <td>
+                        <span>土日</span>
+                    </td>
+                    <td>
+                        <span>www.zzzz.com</span>
+                    </td>
+                </tr>
+            <table>
+        </div>
+    </body>
+</html>

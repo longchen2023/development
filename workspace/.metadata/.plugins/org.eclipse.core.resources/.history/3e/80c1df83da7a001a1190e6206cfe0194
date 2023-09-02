@@ -1,0 +1,118 @@
+package com.example.izakaya.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.izakaya.dao.IzakayaManageDao;
+import com.example.izakaya.dao.UserInfoManageDao;
+import com.example.izakaya.entity.IzakayaInfo;
+import com.example.izakaya.entity.UserInfo;
+import com.example.izakaya.model.IzakayaForm;
+import com.example.izakaya.model.UserForm;
+import com.example.izakaya.util.CommonUtils;
+
+/**
+ * 管理サービス.
+ * 
+ * @author 双江
+ *
+ */
+@Service
+public class IzakayaManageService {
+
+	@Autowired
+	UserInfoManageDao userInfoManageDao;
+	@Autowired
+	IzakayaManageDao izakayaManageDao;
+
+	/**
+	 * ログイン情報をチェックする.
+	 * 
+	 * @param userForm ユーザ情報
+	 * @return OK：true NG: false
+	 */
+	public boolean checkLoginInfo(UserForm userForm) {
+
+		// DBから該当情報を取得する
+		UserInfo userInfo = userInfoManageDao.findByID(userForm.getUserId(), userForm.getUserPassword());
+		return userInfo == null ? false : true;
+	}
+	
+	/**
+	 * 居酒屋の一覧情報を取得する.
+	 * @return 居酒屋の一覧情報
+	 */
+	public List<IzakayaInfo> getIzakayaList(){
+		
+		//居酒屋の一覧情報を取得する
+		List<IzakayaInfo> resultList =  izakayaManageDao.selectIzakayaList();
+		if(resultList == null) {
+			resultList = new ArrayList<IzakayaInfo>();
+		}
+		return resultList;
+	}
+
+	/**
+	 * 居酒屋情報を登録する.
+	 * 
+	 * @param izakayaForm 居酒屋情報
+	 * @param userId      ユーザID
+	 * @return success/failure
+	 */
+	public boolean registerIzakaya(IzakayaForm izakayaForm, String userId) {
+
+		// 登録結果
+		boolean registerIsOk = true;
+		// ローカル時間を取得する
+		final String localDateTime = CommonUtils.getNowDateTime(null);
+
+		// sequenceを取得
+		final String id = izakayaManageDao.selectNextVal();
+		try {
+			// 居酒屋情報をDBに登録する
+			izakayaManageDao.insertIzakayaInfo(id, userId, izakayaForm.getShopName(), izakayaForm.getArea(),
+					izakayaForm.getGenre(), izakayaForm.getAddress(), izakayaForm.getTele(),
+					izakayaForm.getMaxNumOfPeople(), izakayaForm.getPrice(), izakayaForm.getOpenTime(),
+					izakayaForm.getCloseTime(), izakayaForm.getHoliday(), izakayaForm.getUrl(), localDateTime, null);
+		} catch (Exception e) {
+			// 登録が失敗した場合、fasleを設定
+			registerIsOk = false;
+		}
+
+		return registerIsOk;
+	}
+	
+	/**
+	 * 居酒屋情報を修正する.
+	 * 
+	 * @param izakayaForm 居酒屋情報
+	 * @param userId      ユーザID
+	 * @return success/failure
+	 */
+	public boolean updateIzakaya(IzakayaForm izakayaForm, String userId) {
+
+		// 修正結果
+		boolean updateIsOk = true;
+		// ローカル時間を取得する
+		final String localDateTime = CommonUtils.getNowDateTime(null);
+
+		// sequenceを取得
+		final String id = izakayaManageDao.selectNextVal();
+		try {
+			// 居酒屋情報をDBに登録する
+			izakayaManageDao.insertIzakayaInfo(id, userId, izakayaForm.getShopName(), izakayaForm.getArea(),
+					izakayaForm.getGenre(), izakayaForm.getAddress(), izakayaForm.getTele(),
+					izakayaForm.getMaxNumOfPeople(), izakayaForm.getPrice(), izakayaForm.getOpenTime(),
+					izakayaForm.getCloseTime(), izakayaForm.getHoliday(), izakayaForm.getUrl(), localDateTime, null);
+		} catch (Exception e) {
+			// 登録が失敗した場合、fasleを設定
+			registerIsOk = false;
+		}
+
+		return registerIsOk;
+	}
+
+}

@@ -1,0 +1,16 @@
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="/css/common.css" th:href="@{/css/common.css}" rel="stylesheet"></link>
+    </head>
+    <body class="body-all body-menu2">
+        <div>
+            <th:block th:if="${passwordUpdateError == true}">
+                <h3 class="align-center" th:text="#{izakaya_register_failure_info}"></h3>
+            </th:block>
+            <th:block th:if="${passwordUpdateError == false}">
+                <h3 class="align-center" th:text="#{izakaya_register_sucess_info}"></h3>
+            </th:block>
+        </div>
+    </body>
+</html>

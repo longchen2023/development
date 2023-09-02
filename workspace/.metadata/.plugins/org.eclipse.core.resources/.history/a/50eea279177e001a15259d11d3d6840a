@@ -1,0 +1,48 @@
+plugins {
+	id 'org.springframework.boot' version '2.2.6.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+	developmentOnly
+	runtimeClasspath {
+		extendsFrom developmentOnly
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencyManagement {
+  imports {
+    mavenBom 'org.springframework.session:spring-session-bom:Corn-SR2'
+  }
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    compile "org.springframework.boot:spring-boot-starter-thymeleaf"
+	runtimeOnly 'com.oracle.ojdbc:ojdbc8'
+	compile group: 'cn.easyproject', name: 'orai18n', version: '12.1.0.2.0'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.4.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.2'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor "org.projectlombok:lombok:"
+    compile('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.0')
+     classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0'
+}
+test {
+	useJUnitPlatform()
+}

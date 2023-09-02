@@ -1,0 +1,90 @@
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="/css/common.css" th:href="@{/css/common.css}" rel="stylesheet"></link>
+    </head>
+    <body class="body-all">
+        <div>
+            <th:block th:if="${izakayaRegisterError == true}">
+                <h3 class="align-center" th:text="#{izakaya_register_failure_info}"></h3>
+            </th:block>
+            <th:block th:if="${izakayaRegisterError == false}">
+                <h3 class="align-center" th:text="#{izakaya_register_sucess_info}"></h3>
+            </th:block>
+        </div>
+        <div>
+            <table class="table-style_list">
+                <tr>
+                    <th>
+                        <span>店名</span>
+                    </th>
+                    <th>
+                        <span>電話番号</span>
+                    </th>
+                    <th>
+                        <span>住所</span>
+                    </th>
+                    <th>
+                        <span>地域名</span>
+                    </th>
+                    <th>
+                        <span>ジャンル</span>
+                    </th>
+                    <th>
+                        <span>最大人数</span>
+                    </th>
+                    <th>
+                        <span>料金</span>
+                    </th>
+                    <th>
+                        <span>開店時間</span>
+                    </th>
+                    <th>
+                        <span>閉店時間</span>
+                    </th>
+                    <th>
+                        <span>休日</span>
+                    </th>
+                    <th>
+                        <span>ホームページ</span>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <span th:text="${izakayaForm.shopName}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${izakayaForm.tele}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${izakayaForm.address}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${T(com.example.izakaya.util.Area).getEnumFromNo(izakayaForm.area).name}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${T(com.example.izakaya.util.Genre).getEnumFromNo(izakayaForm.genre).name}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${izakayaForm.maxNumOfPeople}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${izakayaForm.price}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${izakayaForm.openTime}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${izakayaForm.closeTime}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${izakayaForm.holiday}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${izakayaForm.url}"></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>

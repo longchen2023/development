@@ -1,0 +1,12 @@
+$(document).ready(function(){
+	  //修正ボタンの事件
+	  $("li").click(function(){
+		  
+	      var lis=document.getElementById("mother").getElementsByTagName("li");
+	      for(var i=0;i<lis.length;i++)
+	      {
+	    	  lis[i].removeClass("active");
+	      }
+		  $(this).addClass("active");
+	  });
+});

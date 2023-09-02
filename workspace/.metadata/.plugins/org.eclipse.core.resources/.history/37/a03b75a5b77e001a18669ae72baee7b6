@@ -1,0 +1,15 @@
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="/css/common.css" th:href="@{/css/common.css}" rel="stylesheet"></link>
+    </head>
+    <body>
+    <div>
+    	<iframe id="iframeTop" name="head"  th:src="@{${T(com.example.izakaya.util.Constants).URL_INDEX + T(com.example.izakaya.util.Constants).URL_HEAD}}"></iframe>
+    	<iframe id="iframeLeft" name="menu1"  th:src="@{${T(com.example.izakaya.util.Constants).URL_INDEX + T(com.example.izakaya.util.Constants).URL_MENU_TOP}}"></iframe>
+    	<iframe id="iframeLeft" name="menu2"  th:src="@{${T(com.example.izakaya.util.Constants).URL_INDEX + T(com.example.izakaya.util.Constants).URL_MENU_LOGIN}}"></iframe>
+    	<iframe id="iframeLeft" name="main"  th:src="@{${T(com.example.izakaya.util.Constants).URL_INDEX + T(com.example.izakaya.util.Constants).URL_MAIN}}"></iframe>
+	</div>
+    </body>
+
+</html>

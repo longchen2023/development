@@ -1,0 +1,14 @@
+package com.example.izakaya.util;
+
+public enum Area {
+	Morioka("",1),
+	   private String name;  
+	    private int index;  
+
+	
+   private Area(String name, int index) {  
+      this.name = name;  
+ this.index = index;  
+	}
+	
+}

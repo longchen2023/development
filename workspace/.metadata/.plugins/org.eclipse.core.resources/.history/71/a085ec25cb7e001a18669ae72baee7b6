@@ -1,0 +1,21 @@
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="/css/common.css" th:href="@{/css/common.css}" rel="stylesheet"></link>
+    </head>
+    <body class="body-all body-menu2">
+        <h2 class="title-content">管理画面</h2>
+        <div class="menu2-text-align-center">
+            <a class="button-style" th:href="@{${T(com.example.izakaya.util.Constants).URL_MANAGE + T(com.example.izakaya.util.Constants).URL_TO_IZAKAYA_LIST}}" target="main">一覧へ</a>
+            <br>
+            <br>
+            <a class="button-style" th:href="@{${T(com.example.izakaya.util.Constants).URL_MANAGE + T(com.example.izakaya.util.Constants).URL_TO_IZAKAYA_REGISTER}}" target="main">新規登録</a>
+            <br>
+            <br>
+            <a class="button-style" th:href="@{${T(com.example.izakaya.util.Constants).URL_MANAGE + T(com.example.izakaya.util.Constants).URL_TO_IZAKAYA_COMMENT_TARGET}}" target="main">コメントの削除</a>
+            <br>
+            <br>
+            <a class="button-style" th:href="@{${T(com.example.izakaya.util.Constants).URL_MANAGE + T(com.example.izakaya.util.Constants).URL_TO_PASSWORD_UPDATE}}" target="main">パスワード変更</a>
+        </div>
+    </body>
+</html>

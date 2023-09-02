@@ -1,0 +1,119 @@
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="/css/common.css" th:href="@{/css/common.css}" rel="stylesheet"></link>
+    </head>
+    <body class="body-all body-menu2">
+        <form action="#" th:action="@{${T(com.example.izakaya.util.Constants).URL_SEARCH + T(com.example.izakaya.util.Constants).URL_IZAKAYA_SEARCH}}" th:object="${izakayaSearchForm}" name="izakayaSearchForm" method="post">
+        	<table  class="align-center">
+            	<tr class="align-right">
+                	<td>
+                    	<span>予約人数</span>
+                    	<input type="text" id ="reservationNums" th:field="*{reservationNums}" maxlength="3"/>
+                	</td>
+            	</tr>
+            	<tr class="align-right">
+                	<td>
+                    	<span>料金範囲</span>
+                    	<input type="text" id ="minAmount" th:field="*{minAmount}" maxlength="8"/>
+                	</td>
+                 	<td class="align-center">
+                    	<span>~</span>
+                	</td>
+                	<td>
+                    	<input type="text" id ="maxAmount" th:field="*{maxAmount}" maxlength="8"/>
+                	</td> 
+            	</tr>
+            	<tr class="align-left">
+                	<td>
+                    	<span>地域名</span>
+                    	<select th:field="*{area}">
+   							<option th:each="area : ${T(com.example.izakaya.util.Area).values()}"
+        							th:value="${area.no}" th:text="${area.name}"></option>
+                    	</select>
+                	</td>
+                	<td>
+                    	<span>ジャンル</span>
+                    	<select id="genre" th:field="*{genre}">
+   							<option th:each="genre : ${T(com.example.izakaya.util.Genre).values()}"
+        							th:value="${genre.no}" th:text="${genre.name}"></option>
+                    	</select>
+                	</td>
+             	</tr>
+        	</table>
+        	<div>
+        	<br>
+        	<th:block th:if="${#fields.hasErrors('reservationNums')}">
+        		<span class="error"  th:errors="*{reservationNums}"></span>
+        		<br>
+        	</th:block>
+        	<th:block th:if="${#fields.hasErrors('minAmount')}">
+        		<span class="error"  th:errors="*{minAmount}"></span>
+        		<br>
+        	</th:block>
+        	<th:block th:if="${#fields.hasErrors('maxAmount')}">
+        		<span class="error"  th:errors="*{maxAmount}"></span>
+        		<br>
+        	</th:block>
+        	<th:block th:if="${#fields.hasErrors('area')}">
+        		<span class="error"  th:errors="*{area}"></span>
+        		<br>
+        	</th:block>
+        	<th:block th:if="${#fields.hasErrors('genre')}">
+        		<span class="error"  th:errors="*{genre}"></span>
+        		<br>
+        	</th:block>
+        	<input class="button" type="submit" value="検索" />
+        	</div>
+        </form>
+		<div>
+            <table border="1" class="align-center">
+                <tr class="align-right table_tr-color-blue">
+                    <td>
+                        <span>番号</span>
+                    </td>
+                    <td>
+                        <span>店名</span>
+                    </td>
+                    <td>
+                        <span>住所</span>
+                    </td>
+                    <td>
+                        <span>地域名</span>
+                    </td>
+                    <td>
+                        <span>ジャンル</span>
+                    </td>
+                    <td>
+                        <span>最大人数</span>
+                    </td>
+                    <td>
+                        <span>料金</span>
+                    </td>
+                    <td>
+                        <span>開店時間</span>
+                    </td>
+                    <td>
+                        <span>閉店時間</span>
+                    </td>
+                    <td>
+                        <span>休日</span>
+                    </td>
+                </tr>
+                <tr class="align-right" th:each="izakaya,izakayaStat : ${izakayaListForm.izakayaList}">
+                	<td th:text="${izakayaStat.index + 1}"></td>
+					<td th:text="${izakaya.name}"></td>
+					<td th:text="${izakaya.address}"></td>
+					<td th:text="${T(com.example.izakaya.util.Area).getEnumFromNo(izakaya.area).name}"></td>
+					<td th:text="${T(com.example.izakaya.util.Genre).getEnumFromNo(izakaya.genre).name}"></td>
+					<td th:text="${izakaya.max_num_of_people}"></td>
+					<td th:text="${izakaya.price}"></td>
+					<td th:text="${izakaya.opening_time}"></td>
+					<td th:text="${izakaya.closing_time}"></td>
+					<td th:text="${izakaya.holiday}"></td>
+					<td><a th:href="@{${T(com.example.izakaya.util.Constants).URL_SEARCH + T(com.example.izakaya.util.Constants).URL_TO_IZAKAYA_DETAIL}(izakayaId=${izakaya.id})}" target="main">詳細ページへ</a></td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,116 @@
+package com.example.izakaya.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.izakaya.dao.CommmentManageDao;
+import com.example.izakaya.dao.IzakayaManageDao;
+import com.example.izakaya.dao.UserInfoManageDao;
+import com.example.izakaya.entity.CommentInfo;
+import com.example.izakaya.entity.IzakayaInfo;
+import com.example.izakaya.model.IzakayaCommentForm;
+import com.example.izakaya.model.IzakayaSearchForm;
+import com.example.izakaya.util.CommonUtils;
+
+/**
+ * 検索サービス.
+ * 
+ * @author 双江
+ *
+ */
+@Service
+public class IzakayaSearchService {
+
+	@Autowired
+	IzakayaManageDao izakayaManageDao;
+	@Autowired
+	CommmentManageDao commmentManageDao;
+	@Autowired
+	UserInfoManageDao userInfoManageDao;
+	
+	
+	/**
+	 * 居酒屋の一覧情報を取得する(conditions).
+	 * @param izakayaSearchForm      izakayaSearchForm
+	 * @return 居酒屋の一覧情報
+	 */
+	public List<IzakayaInfo> getIzakayaListBySearchForm(IzakayaSearchForm izakayaSearchForm){
+		
+		//居酒屋の一覧情報を取得する
+		List<IzakayaInfo> resultList = izakayaManageDao.selectIzakayaListBySearchForm(izakayaSearchForm.getReservationNums(), izakayaSearchForm.getMinAmount(), izakayaSearchForm.getMaxAmount(), izakayaSearchForm.getArea(), izakayaSearchForm.getGenre());
+		if(resultList == null) {
+			resultList = new ArrayList<IzakayaInfo>();
+		}
+		return resultList;
+	}
+	
+	/**
+	 * 居酒屋の一覧情報を取得する(all).
+	 * @return 居酒屋の一覧情報
+	 */
+	public List<IzakayaInfo> getIzakayaList(){
+		
+		//居酒屋の一覧情報を取得する
+		List<IzakayaInfo> resultList =  izakayaManageDao.selectIzakayaList();
+		if(resultList == null) {
+			resultList = new ArrayList<IzakayaInfo>();
+		}
+		return resultList;
+	}
+	
+	/**
+	 * idより、居酒屋の情報を取得する.
+	 * @param id      居酒屋id
+	 * @return 居酒屋の情報
+	 */
+	public IzakayaInfo getIzakayaById(String id){
+		
+		//居酒屋の情報を取得する
+		final IzakayaInfo izakayaInfo = izakayaManageDao.selectIzakayaById(id);
+		return izakayaInfo;
+	}
+	
+	/**
+	 * 居酒屋idより、居酒屋のコメント情報を取得する.
+	 * @param id      居酒屋id
+	 * @return 居酒屋のコメント情報
+	 */
+	public List<CommentInfo> getIzakayaCommentById(String id){
+		
+		//居酒屋の情報を取得する
+		List<CommentInfo> comments = commmentManageDao.findByIzakayaId(id);
+		if(comments == null) {
+			comments = new ArrayList<CommentInfo>();
+		}
+		return comments;
+	}
+	
+	/**
+	 * 居酒屋のコメント情報を登録する.
+	 * @param izakayaCommentForm      izakayaCommentForm
+	 * @return success/failure
+	 */
+	public boolean registerIzakayaCommentInfo(IzakayaCommentForm izakayaCommentForm){
+		
+		// 修正結果
+		boolean insertIsOk = true;
+		// ローカル時間を取得する
+		final String localDateTime = CommonUtils.getNowDateTime(null);
+
+		// sequenceを取得
+		final String id = commmentManageDao.selectNextVal();
+		try {
+			//居酒屋のコメント情報を登録する.
+			commmentManageDao.insertIzakayaCommentInfo(id,izakayaCommentForm.getContent(),"5"
+					,"1",izakayaCommentForm.getIzakayaId(),izakayaCommentForm.getUserId(),localDateTime,"null");
+		} catch (Exception e) {
+			// 登録が失敗した場合、fasleを設定
+			insertIsOk = false;
+		}
+		return insertIsOk;
+	}
+	
+}

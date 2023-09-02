@@ -1,0 +1,44 @@
+package com.example.izakaya.entity;
+
+import lombok.Data;
+
+/**
+ * 居酒屋entity.
+ * @author 双江
+ *
+ */
+@Data
+public class IzakayaInfo {
+	
+	//id
+	private int id;
+	//ユーザID
+	private int user_id;
+	//店名
+	private String name;
+	//電話番号
+	private String tele;
+	//住所
+	private String address;
+	//地域名
+	private String area;
+	//ジャンル
+	private String genre;
+	//最大人数
+	private String maxNumOfPeople;
+	//料金
+	private String price;
+	//開店時間
+	private String opening_time;
+	//閉店時間
+	private String closing_time;
+	//休日
+	private String holiday;
+	//ホームページ
+	private String url;
+    //登録時間
+    private String register_time;
+    //更新時間
+    private String update_time;
+
+}

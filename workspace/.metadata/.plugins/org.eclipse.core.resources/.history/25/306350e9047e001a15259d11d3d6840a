@@ -1,0 +1,78 @@
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="/css/common.css" th:href="@{/css/common.css}" rel="stylesheet"></link>
+    </head>
+    <body class="body-all">
+        <div>
+            <table border="1" class="align-center table_align_centr">
+                <tr>
+                    <td>店名：</td>
+                    <td><span th:text="${izakayaForm.shopName}"></span></td>
+                </tr>
+                <tr>
+                    <td>電話番号：</td>
+                    <td><span th:text="${izakayaForm.tele}"></span></td>
+                </tr>
+                <tr>
+                    <td>住所：</td>
+                    <td><span th:text="${izakayaForm.address}"></span></td>
+                </tr>
+                <tr>
+                    <td>地域名：</td>
+                    <td><span th:text="${T(com.example.izakaya.util.Area).getEnumFromNo(izakayaForm.area).name}"></span></td>
+                </tr>
+                <tr>
+                    <td>ジャンル</td>
+                    <td><span th:text="${T(com.example.izakaya.util.Genre).getEnumFromNo(izakayaForm.genre).name}"></span></td>
+                </tr>
+                <tr>
+                    <td>最大人数</td>
+                    <td><span th:text="${izakayaForm.maxNumOfPeople}"></span></td>
+                </tr>
+                <tr>
+                    <td>料金</td>
+                    <td><span th:text="${izakayaForm.price}"></span></td>
+                </tr>
+                <tr>
+                    <td>営業時間</td>
+                    <td><span th:text="${izakayaForm.openTime}"></span>~<span th:text="${izakayaForm.closeTime}"></span></td>
+                </tr>
+                <tr>
+                    <td>休日</td>
+                    <td><span  th:text="${izakayaForm.holiday}"></span></td>
+                </tr>
+                <tr>
+                    <td>ホームページ</td>
+                    <td><a th:href="@{${izakayaForm.url}}" target="_blank"><span th:text="${izakayaForm.url}"></span></a></td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <div class="align-center">
+            	<h2 class="align-center">この店への評価</h2>
+                <table class="align-left table_align_centr">
+                    <tr class="align-right" th:each="izakayaComment : ${izakayaCommentListForm.commentList}">
+                    	<td th:text="${izakayaComment.name}"></td>
+                    	<td th:text="${T(com.example.izakaya.util.Assessment).getEnumFromLevel(izakayaComment.assessment).name}"></td>
+                    	<td th:text="${izakayaComment.content}"></td>
+                    </tr>
+            	</table>
+            </div>
+			<form action="#" th:action="@{${T(com.example.izakaya.util.Constants).URL_SEARCH + T(com.example.izakaya.util.Constants).URL_IZAKAYA_COMMENT}}" name="izakayaCommentForm" method="post">
+            	<div class="align-center">
+            		<br>
+            		<br>
+            	    <span>評価</span>
+                    <select name="assessment">
+   						<option th:each="assessment : ${T(com.example.izakaya.util.Assessment).values()}"
+        					th:value="${assessment.level}" th:text="${assessment.name}"></option>
+                    </select><br>
+                	<textarea name="content" rows="5" cols="40" maxlength="100"></textarea><br>
+                	<input type="hidden" id="izakayaId" name="izakayaId" th:value="${izakayaForm.no}"/>
+                	<input class="button" type="submit" value="コメント" />
+            	</div>
+            </form>
+        </div>
+    </body>
+</html>

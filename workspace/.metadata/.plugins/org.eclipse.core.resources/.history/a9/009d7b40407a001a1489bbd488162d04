@@ -1,0 +1,30 @@
+package com.example.izakaya.dao;
+
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import com.example.izakaya.entity.UserInfo;
+
+/**
+ * 居酒屋管理Dao.
+ * @author 双江
+ *
+ */
+@Mapper
+public interface  IzakayaManageDao {
+
+	@Insert({ "insert into izakaya_info(id, user_id, name, area, genre,address,tele,max_num_of_people,price,"
+			+ "opening_time,closing_time,holidy,url,register_time,update_time) "
+			+ "values(#{id}, #{user_id}, #{name}, #{area}, #{genre}, #{address}, #{tele}, #{max_num_of_people}, #{price}"
+			+ ", #{opening_time}, #{closing_time}, #{holidy}, #{url}, #{register_time}, #{update_time})" })
+	 int insertIzakayaInfo(@Param("id")String id,@Param("user_id")String user_id,@Param("name")String name,
+			 @Param("area")String area,@Param("genre")String genre,@Param("address")String address,@Param("tele")String tele,@Param("max_num_of_people")String max_num_of_people,
+			 @Param("price")String price,@Param("opening_time")String opening_time,@Param("closing_time")String closing_time,@Param("holidy")String holidy,@Param("url")String url,
+			 @Param("register_time")String register_time,@Param("update_time")String update_time);
+	
+	
+	 @Select("select seq_izakaya_info.nextval from dual")
+	 String selectNextVal();
+}

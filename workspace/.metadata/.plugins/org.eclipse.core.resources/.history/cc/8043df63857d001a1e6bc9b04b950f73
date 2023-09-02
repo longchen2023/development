@@ -1,0 +1,15 @@
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="/css/common.css" th:href="@{/css/common.css}" rel="stylesheet"></link>
+    </head>
+    <body class="body-all body-menu1">
+        <div class="align-center">
+            <h2 class="title-content">メニュー</h2>
+            <a class="button" th:href="@{${T(com.example.izakaya.util.Constants).URL_INDEX + T(com.example.izakaya.util.Constants).URL_MAIN}}" target="main">トップ</a>
+            <br>
+            <br>
+            <a class="button" th:href="@{${T(com.example.izakaya.util.Constants).URL_SEARCH + T(com.example.izakaya.util.Constants).URL_IZAKAYA_SEARCH_ALL}}" target="main">一覧</a>
+            </div>
+    </body>
+</html>

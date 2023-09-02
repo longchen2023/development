@@ -1,0 +1,30 @@
+package com.example.izakaya.model;
+
+import javax.validation.constraints.Pattern;
+
+import lombok.Data;
+
+/**
+ * ユーザForm.
+ * @author 双江
+ *
+ */
+@Data 
+public class PasswordForm {
+	
+	//ユーザID
+	@Pattern(regexp = "^[0-9a-zA-Z]+$",message = "{izakaya.userId.error}")
+    private String userId;
+    //旧パスワード
+	@Pattern(regexp = "^[0-9a-zA-Z]+$",message = "{user.oldPassword.error}")
+    private String oldPassword;
+	
+    //新しいパスワード
+	@Pattern(regexp = "^[0-9a-zA-Z]+$",message = "{user.newPassword.error}")
+    private String newPassword;
+	
+    //新しいパスワード（確認用）
+	@Pattern(regexp = "^[0-9a-zA-Z]+$",message = "{user.newPasswordConfirm.error}")
+    private String newPasswordConfirm;
+	
+}

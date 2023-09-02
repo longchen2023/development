@@ -1,0 +1,51 @@
+package com.example.izakaya.model;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
+import lombok.Data;
+
+/**
+ * 居酒屋searchForm.
+ * @author 双江
+ *
+ */
+@Data 
+public class IzakayaForm {
+	
+	//no
+	private int no;
+	//店名
+	@NotBlank(message = "{izakaya.shopName.error}")
+	private String shopName;
+	//電話番号
+	@Pattern(regexp = "^[0-9a-zA-Z]+$",message = "{izakaya.tele.error}")
+	private String tele;
+	//住所
+	@NotBlank(message = "{izakaya.address.error}")
+	private String address;
+	//地域名
+	private String area;
+	//ジャンル
+	private String genre;
+	//最大人数
+	@Pattern(regexp = "^[0-9]+$",message = "{izakaya.maxNumOfPeople.error}")
+	private String maxNumOfPeople;
+	//料金
+	@Pattern(regexp = "^[0-9]+$",message = "{izakaya.price.error}")
+	private String price;
+	//開店時間
+	@Pattern(regexp = "^[0-9]+$",message = "{izakaya.openTime.error}")
+	private String openTime;
+	//閉店時間
+	@Pattern(regexp = "^[0-9]+$",message = "{izakaya.closeTime.error}")
+	private String closeTime;
+	//休日
+	@NotBlank(message = "{izakaya.holiday.error}")
+	private String holiday;
+	//ホームページ
+	@NotBlank(message = "{izakaya.url.error}")
+	private String url;
+	
+
+}

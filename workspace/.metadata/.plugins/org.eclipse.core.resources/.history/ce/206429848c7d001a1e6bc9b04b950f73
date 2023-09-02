@@ -1,0 +1,45 @@
+package com.example.izakaya.dao;
+
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import com.example.izakaya.entity.UserInfo;
+
+/**
+ * コメント情報管理Dao.
+ * @author 双江
+ *
+ */
+@Mapper
+public interface  CommmentManageDao {
+
+	 @Select("select * from comment_info where izakaya_id = #{id}")
+	 UserInfo findByID(@Param("id")String id);
+	 
+	 @Delete("delete from comment_info where izakaya_id = #{id}")
+	 int deleteByID(@Param("id")String id);
+	 
+	 @Insert({ "insert into comment_info("
+				+ "id, "
+				+ "content, "
+				+ "assessment, "
+				+ "valid_flag, "
+				+ "izakaya_id, "
+				+ "user_id, "
+				+ "register_time, "
+				+ "update_time "
+				+ "values("
+				+ "#{id,jdbcType=NUMERIC}, "
+				+ "#{content,jdbcType=VARCHAR}, "
+				+ "#{assessment,jdbcType=VARCHAR}, "
+				+ "#{valid_flag,jdbcType=VARCHAR}, "
+				+ "#{izakaya_id,jdbcType=VARCHAR}, "
+				+ "#{user_id,jdbcType=VARCHAR}, "
+				+ "#{register_time,jdbcType=VARCHAR}, "
+				+ "#{update_time,jdbcType=VARCHAR}) "
+	 })
+	 int insertIzakayaCommentInfo(@Param("id")String id);
+}

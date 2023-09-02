@@ -1,0 +1,11 @@
+$(document).ready(function(){
+	  $("li").click(function(){
+		  $("li").each(function(index){
+		        $(this).removeClass("active");
+		      })   
+		  $(this).addClass("active");
+		
+	  });
+	  
+	  
+});

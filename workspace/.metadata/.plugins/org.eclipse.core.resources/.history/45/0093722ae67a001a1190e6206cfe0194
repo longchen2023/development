@@ -1,0 +1,135 @@
+package com.example.izakaya.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+
+import com.example.izakaya.entity.IzakayaInfo;
+
+/**
+ * 居酒屋管理Dao.
+ * @author 双江
+ *
+ */
+@Mapper
+public interface  IzakayaManageDao {
+
+	/**
+	 * 居酒屋情報をDBに登録する.
+	 * @param id
+	 * @param user_id
+	 * @param name
+	 * @param area
+	 * @param genre
+	 * @param address
+	 * @param tele
+	 * @param max_num_of_people
+	 * @param price
+	 * @param opening_time
+	 * @param closing_time
+	 * @param holidy
+	 * @param url
+	 * @param register_time
+	 * @param update_time
+	 * @return 
+	 */
+	@Insert({ "insert into izakaya_info("
+			+ "id, "
+			+ "user_id, "
+			+ "name, "
+			+ "area, "
+			+ "genre, "
+			+ "address, "
+			+ "tele, "
+			+ "max_num_of_people, "
+			+ "price, "
+			+ "opening_time, "
+			+ "closing_time, "
+			+ "holidy, "
+			+ "url, "
+			+ "register_time, "
+			+ "update_time) "
+			+ "values("
+			+ "#{id,jdbcType=NUMERIC}, "
+			+ "#{user_id,jdbcType=VARCHAR}, "
+			+ "#{name,jdbcType=VARCHAR}, "
+			+ "#{area,jdbcType=VARCHAR}, "
+			+ "#{genre,jdbcType=VARCHAR}, "
+			+ "#{address,jdbcType=VARCHAR}, "
+			+ "#{tele,jdbcType=VARCHAR}, "
+			+ "#{max_num_of_people,jdbcType=NUMERIC}, "
+			+ "#{price,jdbcType=NUMERIC}, "
+			+ "#{opening_time,jdbcType=VARCHAR}, "
+			+ "#{closing_time,jdbcType=VARCHAR}, "
+			+ "#{holidy,jdbcType=VARCHAR}, "
+			+ "#{url,jdbcType=VARCHAR}, "
+			+ "#{register_time,jdbcType=VARCHAR}, "
+			+ "#{update_time,jdbcType=VARCHAR})" })
+	 int insertIzakayaInfo(@Param("id")String id,@Param("user_id")String user_id,@Param("name")String name,
+			 @Param("area")String area,@Param("genre")String genre,@Param("address")String address,@Param("tele")String tele,@Param("max_num_of_people")String max_num_of_people,
+			 @Param("price")String price,@Param("opening_time")String opening_time,@Param("closing_time")String closing_time,@Param("holidy")String holidy,@Param("url")String url,
+			 @Param("register_time")String register_time,@Param("update_time")String update_time);
+	
+	/**
+	 * 居酒屋情報をDBにアップデートする.
+	 * @param id
+	 * @param user_id
+	 * @param name
+	 * @param area
+	 * @param genre
+	 * @param address
+	 * @param tele
+	 * @param max_num_of_people
+	 * @param price
+	 * @param opening_time
+	 * @param closing_time
+	 * @param holidy
+	 * @param url
+	 * @param update_time
+	 * @return
+	 */
+	@Update({ "update izakaya_info set "
+			+ "name = #{name,jdbcType=VARCHAR}, "
+			+ "area = #{area,jdbcType=VARCHAR}, "
+			+ "genre = #{genre,jdbcType=VARCHAR}, "
+			+ "address = #{address,jdbcType=VARCHAR}, "
+			+ "tele = #{tele,jdbcType=VARCHAR}, "
+			+ "max_num_of_people = #{max_num_of_people,jdbcType=NUMERIC}, "
+			+ "price = #{price,jdbcType=NUMERIC}, "
+			+ "opening_time = #{opening_time,jdbcType=VARCHAR}, "
+			+ "closing_time = #{closing_time,jdbcType=VARCHAR}, "
+			+ "holiday = #{holiday,jdbcType=VARCHAR}, "
+			+ "url = #{url,jdbcType=VARCHAR}, "
+			+ "update_time = #{update_time,jdbcType=VARCHAR} "
+			+ "where id = #{id,jdbcType=NUMERIC}"})
+	 int updateIzakayaInfo(@Param("id")String id,@Param("user_id")String user_id,@Param("name")String name,
+			 @Param("area")String area,@Param("genre")String genre,@Param("address")String address,@Param("tele")String tele,@Param("max_num_of_people")String max_num_of_people,
+			 @Param("price")String price,@Param("opening_time")String opening_time,@Param("closing_time")String closing_time,@Param("holidy")String holidy,@Param("url")String url,
+			 @Param("update_time")String update_time);
+	
+	/**
+	 * sequence.NextValを取得する.
+	 * @return sequence.NextVal
+	 */
+	 @Select("select seq_izakaya_info.nextval from dual")
+	 String selectNextVal();
+	 
+	 /**
+	  * 一覧情報を取得する.
+	  * @return 一覧情報
+	  */
+	 @Select("select * from izakaya_info")
+	 List<IzakayaInfo> selectIzakayaList();
+	 
+	 
+	 /**
+	  * idより居酒屋情報を取得する.
+	  * @return 居酒屋情報
+	  */
+	 @Select("select * from izakaya_info where id = #{id,jdbcType=NUMERIC}")
+	 IzakayaInfo selectIzakayaById(@Param("id")String id);
+}

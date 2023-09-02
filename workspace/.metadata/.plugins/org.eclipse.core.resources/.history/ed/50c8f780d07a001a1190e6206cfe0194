@@ -1,0 +1,114 @@
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="/css/common.css" th:href="@{/css/common.css}" rel="stylesheet"></link>
+    </head>
+    <body class="body-all body-menu2">
+        <form action="#" th:action="@{${T(com.example.izakaya.util.Constants).URL_MANAGE + T(com.example.izakaya.util.Constants).URL_IZAKAYA_REGISTER}}" th:object="${izakayaForm}" name="izakayaForm" method="post">
+        	<table  class="align-center">
+            	<tr class="align-right">
+                	<td>
+                    	<span>店名</span>
+                    	<input type="text" th:field="*{shopName}" maxlength="50"/>
+                	</td>
+                	<td>
+                  	  <span>電話番号</span>
+                   	 <input type="text" th:field="*{tele}" maxlength="13"/>
+                	</td>
+                	<td>
+                   		<span>住所</span>
+                    	<input type="text" th:field="*{address}" maxlength="50"/>
+                	</td>           
+            	</tr>
+            	<tr class="menu2-text-align-right">
+                	<td>
+                    	<span>地域名</span>
+                    	<select th:field="*{area}">
+                      		<option value="1">盛岡</option>
+                       		<option value="2">滝沢</option>
+   							<option th:each="area : ${T(com.example.izakaya.util.Area).values()}"
+        							th:value="${area.no}" th:text="${area.name}"></option>
+                    	</select>
+                	</td>
+                	<td>
+                    	<span>ジャンル</span>
+                    	<select id="genre" th:field="*{genre}">
+                        	<option value="1">和</option>
+                        	<option value="2">洋</option>
+                        	<option value="3">中</option>
+                    	</select>
+                	</td>
+                	<td>
+                    	<span>最大人数</span>
+                    	<input type="text" th:field="*{maxNumOfPeople}" maxlength="4"/>
+                	</td>
+                
+            	</tr>
+            	<tr class="align-right">
+                	<td>
+                    	<span>料金</span>
+                    	<input type="text" th:field="*{price}" maxlength="10"/>
+                	</td>
+                	<td>
+                    	<span>開店時間</span>
+                    	<input type="text" th:field="*{openTime}" maxlength="4"/>
+                	</td>
+                	<td>
+                    	<span>閉店時間</span>
+                    	<input type="text" th:field="*{closeTime}" maxlength="4"/>
+                	</td>      
+            	</tr>
+            	<tr class="menu2-text-align-right">
+                	<td>
+                    	<span>休日</span>
+                    	<input type="text" th:field="*{holiday}" maxlength="50"/>
+                	</td>
+                	<td>
+                    	<span>ホームページ</span>
+                    	<input type="text" th:field="*{url}" maxlength="50"/>
+                	</td> 
+            	</tr>
+        	</table>
+        	<div>
+        		<br><br><br>
+        		<th:block th:if="${#fields.hasErrors('shopName')}">
+        			<span class="error"  th:errors="*{shopName}"></span>
+        			<br>
+        		</th:block>
+        		<th:block th:if="${#fields.hasErrors('tele')}">
+        			<span class="error"  th:errors="*{tele}"></span>
+        			<br>
+        		</th:block>
+        		<th:block th:if="${#fields.hasErrors('address')}">
+        			<span class="error"  th:errors="*{address}"></span>
+        			<br>
+        		</th:block>
+        		<th:block th:if="${#fields.hasErrors('maxNumOfPeople')}">
+        			<span class="error"  th:errors="*{maxNumOfPeople}"></span>
+        			<br>
+        		</th:block>
+        		<th:block th:if="${#fields.hasErrors('price')}">
+        			<span class="error"  th:errors="*{price}"></span>
+        			<br>
+        		</th:block>
+        		<th:block th:if="${#fields.hasErrors('openTime')}">
+        			<span class="error"  th:errors="*{openTime}"></span>
+        			<br>
+        		</th:block>
+        		<th:block th:if="${#fields.hasErrors('closeTime')}">
+        			<span class="error"  th:errors="*{closeTime}"></span>
+        			<br>
+        		</th:block>
+        		<th:block th:if="${#fields.hasErrors('holiday')}">
+        			<span class="error"  th:errors="*{holiday}"></span>
+        			<br>
+        		</th:block>
+        		<th:block th:if="${#fields.hasErrors('url')}">
+        			<span class="error"  th:errors="*{url}"></span>
+        			<br>
+        		</th:block>
+				<input class="button" type="submit" value="登録" />
+        	</div>
+        </form>
+    </body>
+</html>

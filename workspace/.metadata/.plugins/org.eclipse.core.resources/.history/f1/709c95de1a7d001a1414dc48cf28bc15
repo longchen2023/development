@@ -1,0 +1,50 @@
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="/css/common.css" th:href="@{/css/common.css}" rel="stylesheet"></link>
+    </head>
+    <body class="body-all body-menu2">
+        <form action="#" th:action="@{${T(com.example.izakaya.util.Constants).URL_SEARCH + T(com.example.izakaya.util.Constants).URL_IZAKAYA_SEARCH}}" th:object="${izakayaSearchForm}" name="izakayaForm" method="post">
+        	<table  class="align-center">
+            	<tr class="align-right">
+                	<td>
+                    	<span>予約人数</span>
+                    	<input type="text" id ="reservationNums" th:field="*{reservationNums}" maxlength="3"/>
+                	</td>
+            	</tr>
+            	<tr class="align-right">
+                	<td>
+                    	<span>料金範囲</span>
+                    	<input type="text" id ="minAmount" th:field="*{minAmount}" maxlength="8"/>
+                	</td>
+                 	<td class="align-center">
+                    	<span>~</span>
+                	</td>
+                	<td>
+                    	<input type="text" id ="maxAmount" th:field="*{maxAmount}" maxlength="8"/>
+                	</td> 
+            	</tr>
+            	<tr class="align-left">
+                	<td>
+                    	<span>地域名</span>
+                    	<select th:field="*{area}">
+   							<option th:each="area : ${T(com.example.izakaya.util.Area).values()}"
+        							th:value="${area.no}" th:text="${area.name}"></option>
+                    	</select>
+                	</td>
+                	<td>
+                    	<span>ジャンル</span>
+                    	<select id="genre" th:field="*{genre}">
+   							<option th:each="genre : ${T(com.example.izakaya.util.Genre).values()}"
+        							th:value="${genre.no}" th:text="${genre.name}"></option>
+                    	</select>
+                	</td>
+             	</tr>
+        	</table>
+        	<div>
+        	<br>
+        	<input class="button" type="submit" value="検索" />
+        	</div>
+        </form>
+    </body>
+</html>

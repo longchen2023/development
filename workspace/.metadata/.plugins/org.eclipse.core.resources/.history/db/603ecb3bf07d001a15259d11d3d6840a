@@ -1,0 +1,81 @@
+package com.example.izakaya.util;
+
+/**
+ * 評価レベルenum.
+ * @author 双江
+ *
+ */
+public enum Assessment {
+	ONE("★",1),
+	TWO("★★",2),
+	THREE("★★★",3),
+	FOUR("★★★★",4),
+	FIVE("★★★★★",5);
+	
+	//地域名称
+	private String name;
+	//地域番号
+	private int no;
+
+	/**
+	 * 
+	 * @param name
+	 * @param no
+	 */
+	private Assessment(String name, int no) {
+		this.name=name;
+		this.no=no;
+	}
+	
+	/**
+	 * 地域名称より、地域enumを取得する.
+	 * @param name 地域名称
+	 * @return 地域enum
+	 */
+	public static Assessment getEnumFromName(String name) {
+		if(name == null) {
+			return null;
+		}
+		
+		for(Assessment assessment :Assessment.values()) {
+			if(assessment.getName().equals(name)) {
+				return assessment;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * 地域noより、地域enumを取得する.
+	 * @param no 地域no
+	 * @return 地域enum
+	 */
+	public static Assessment getEnumFromNo(int no) {
+		
+		for(Assessment assessment :Assessment.values()) {
+			if(assessment.getNo()== no) {
+				return assessment;
+			}
+		}
+		return null;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getNo() {
+		return no;
+	}
+
+	public void setNo(int no) {
+		this.no = no;
+	}
+	
+	
+	
+}

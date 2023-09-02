@@ -1,0 +1,23 @@
+package com.example.izakaya.util;
+
+import lombok.Data;
+
+/**
+ * 地域enum.
+ * @author 双江
+ *
+ */
+public enum Area {
+	Morioka("盛岡",1),
+	Takizawa("滝沢",1);
+	
+	//地域名称
+	private String name;
+	//地域番号
+	private int no;
+
+	private Area(String name, int no) {
+		
+	}
+	
+}

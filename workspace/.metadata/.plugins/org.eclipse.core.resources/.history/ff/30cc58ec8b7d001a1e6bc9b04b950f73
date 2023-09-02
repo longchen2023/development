@@ -1,0 +1,5 @@
+package com.example.izakaya.entity;
+
+public class CommentInfo {
+
+}

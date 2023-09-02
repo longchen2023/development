@@ -1,0 +1,6 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<frameset rows="25%,75%">
+    <frame th:src="@{${T(com.example.izakaya.util.Constants).URL_SERACH + T(com.example.izakaya.util.Constants).URL_IZAKAYA_SEARCH}}" name="serach" noresize>
+    <frame th:src="@{${T(com.example.izakaya.util.Constants).URL_SERACH + T(com.example.izakaya.util.Constants).URL_IZAKAYA_RESULT_LIST}}" name="result" noresize>
+</frameset>
+</html>

@@ -1,0 +1,17 @@
+$(document).ready(function(){
+	  //修正ボタンの事件
+	  $("li").click(function(){
+		  
+		  var xx = $("#menu2",parent.document).find("li").val();
+		  alert(xx);
+		  
+		  $("li").each(function(index){
+		        $(this).removeClass("active");
+		      })   
+		  $(this).addClass("active");
+		  
+		  $("#ifm").contents().find("#btnOk").click();
+	  });
+	  
+	  
+});

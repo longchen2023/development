@@ -1,0 +1,5 @@
+package com.example.izakaya.dao;
+
+public class CommentManageDao {
+
+}

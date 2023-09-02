@@ -1,0 +1,59 @@
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="/css/common.css" th:href="@{/css/common.css}" rel="stylesheet"></link>
+    </head>
+    <body class="body-all body-menu2">
+        <h2 class="title-content">パスワード変更</h2>
+        <form action="#" th:action="@{${T(com.example.izakaya.util.Constants).URL_MANAGE + T(com.example.izakaya.util.Constants).URL_PASSWORD_UPDATE}}" th:object="${passwordForm}" name="passwordForm" method="post">
+        	<div class="align-right">
+        		<table class="table_align_centr">
+            		<tr class="align-right">
+                		<td>
+                    		<span>ID</span>
+                    		<input type="text" th:field="*{userId}" maxlength="20"/>
+                		</td>
+            		</tr>
+            		<tr class="align-right">
+                		<td>
+                    		<span>旧パスワード</span>
+                    		<input type="text" id ="oldPassword" th:field="*{oldPassword}" maxlength="13"/>
+                		</td>
+            		</tr>
+            		<tr class="align-right">
+                		<td>
+                    		<span>新しいパスワード</span>
+                    		<input type="text" id ="newPassword" th:field="*{newPassword}" maxlength="50"/>
+                		</td>
+            		</tr>
+            		<tr class="align-right">
+                		<td>
+                    		<span>新しいパスワード（確認用）</span>
+                    		<input type="text" id ="newPasswordConfirm" th:field="*{newPasswordConfirm}" maxlength="50"/>
+                		</td>
+            		</tr>
+        		</table>
+        	</div>
+        	<div class="menu2-text-align-center">
+        		<br>
+        		<th:block th:if="${#fields.hasErrors('userId')}">
+        			<span class="error"  th:errors="*{userId}"></span>
+        			<br>
+        		</th:block>
+        		<th:block th:if="${#fields.hasErrors('oldPassword')}">
+        			<span class="error"  th:errors="*{oldPassword}"></span>
+        			<br>
+        		</th:block>
+        		<th:block th:if="${#fields.hasErrors('newPassword')}">
+        			<span class="error"  th:errors="*{newPassword}"></span>
+        			<br>
+        		</th:block>
+        		<th:block th:if="${#fields.hasErrors('newPasswordConfirm')}">
+        			<span class="error"  th:errors="*{newPasswordConfirm}"></span>
+        			<br>
+        		</th:block>
+                <input class="submit-style" type="submit" value="登録" />
+        	</div>
+        </form>
+    </body>
+</html>

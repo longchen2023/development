@@ -1,0 +1,13 @@
+package com.example.izakaya.model;
+
+import lombok.Data;
+
+/**
+ * 居酒屋Form.
+ * @author 双江
+ *
+ */
+@Data 
+public class IzakayaForm {
+
+}

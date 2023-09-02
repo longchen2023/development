@@ -1,0 +1,30 @@
+package com.example.izakaya.entity;
+
+import lombok.Data;
+
+/**
+ * 居酒屋コメントentity.
+ * @author 双江
+ *
+ */
+@Data
+public class CommentInfo {
+
+	//コメントID
+	private String id;
+	//コメント内容
+	private String content;
+	//評価
+	private String assessment;
+	//有効フラグ
+	private String valid_flag;
+	//居酒屋ID
+	private String izakaya_id;
+	//ユーザID
+	private String user_id;
+	//登録時間
+	private String register_time;
+	//更新時間
+	private String update_time;
+	
+}

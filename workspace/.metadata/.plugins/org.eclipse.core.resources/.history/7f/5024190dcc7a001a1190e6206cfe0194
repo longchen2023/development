@@ -1,0 +1,11 @@
+package com.example.izakaya.util;
+
+public enum Area {
+	Morioka("盛岡",1),
+	Takizawa("滝沢",1);
+
+	private Area(String name, int index) {
+		
+	}
+	
+}

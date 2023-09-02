@@ -1,0 +1,44 @@
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="/css/common.css" th:href="@{/css/common.css}" rel="stylesheet"></link>
+    </head>
+    <body class="body-all body-menu2">
+        <h2 class="title-content">管理画面</h2>
+        <form action="#" th:action="@{${T(com.example.izakaya.util.Constants).URL_MANAGE + T(com.example.izakaya.util.Constants).URL_LOGIN_IN}}" th:object="${userForm}" name="userForm" method="post">
+            <table>
+              　　　   	<tr class="menu2-text-align-right">
+                    <td>
+						<th:block th:if="${#fields.hasErrors('userPassword')}">
+							<span class="error" th:errors="*{userPassword}"></span>
+						</th:block>
+						<th:block th:if="${loginNotExistError == true}">
+							<span class="error" th:text="#{loginNotExistError}"></span>
+						</th:block>
+                    </td>
+                </tr>
+                <tr class="menu2-text-align-right" th:if="${#fields.hasErrors('userId')}">
+                    <td>
+						<span class="error" th:errors="*{userId}"></span>
+                    </td>
+                </tr>
+                <tr class="menu2-text-align-right">
+                    <td>
+                        <span>ID</span>
+                        <input type="text" th:field="*{userId}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>password</span>
+                        <input type="password" th:field="*{userPassword}"/>
+                    </td>
+                </tr>
+            </table>
+            <div class="menu2-text-align-center">
+                </br></br></br>
+                <input class="button" type="submit" value="ログイン" />
+            </div>
+        </form>
+    </body>
+</html>

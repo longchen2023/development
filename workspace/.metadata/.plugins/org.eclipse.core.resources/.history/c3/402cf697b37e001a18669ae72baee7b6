@@ -1,0 +1,16 @@
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="/css/common.css" th:href="@{/css/common.css}" rel="stylesheet"></link>
+    </head>
+<frameset rows="20%,70%" bordercolor="#B3D4F0" border="3px">
+    <frame th:src="@{${T(com.example.izakaya.util.Constants).URL_INDEX + T(com.example.izakaya.util.Constants).URL_HEAD}}" name="head" >
+    <frameset cols="15%,85%" bordercolor="#B3D4F0">
+        <frameset rows="40%,60%" noresize bordercolor="#B3D4F0">
+            <frame th:src="@{${T(com.example.izakaya.util.Constants).URL_INDEX + T(com.example.izakaya.util.Constants).URL_MENU_TOP}}" name="menu1" noresize >
+            <frame th:src="@{${T(com.example.izakaya.util.Constants).URL_INDEX + T(com.example.izakaya.util.Constants).URL_MENU_LOGIN}}" name="menu2" noresize >
+        </frameset>
+        <frame th:src="@{${T(com.example.izakaya.util.Constants).URL_INDEX + T(com.example.izakaya.util.Constants).URL_MAIN}}" name ="main" noresize >
+     </frameset>
+</frameset>
+</html>

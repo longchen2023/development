@@ -1,0 +1,75 @@
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="/css/common.css" th:href="@{/css/common.css}" rel="stylesheet"></link>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+            function confirmDio(){
+                if(confirm("当該データを削除してもよろしいですか。")){
+                    return;
+                }
+            }
+        </script> 
+    </head>
+    <body class="body-all">
+        <div>
+            <table border="1" class="align-center table_all-width">
+                <tr class="align-right table_tr-color-blue">
+                    <td>
+                        <span></span>
+                    </td>
+                    <td>
+                        <span>店名</span>
+                    </td>
+                    <td>
+                        <span>電話番号</span>
+                    </td>
+                    <td>
+                        <span>住所</span>
+                    </td>
+                    <td>
+                        <span>地域名</span>
+                    </td>
+                    <td>
+                        <span>ジャンル</span>
+                    </td>
+                    <td>
+                        <span>最大人数</span>
+                    </td>
+                    <td>
+                        <span>料金</span>
+                    </td>
+                    <td>
+                        <span>開店時間</span>
+                    </td>
+                    <td>
+                        <span>閉店時間</span>
+                    </td>
+                    <td>
+                        <span>休日</span>
+                    </td>
+                    <td>
+                        <span>ホームページ</span>
+                    </td>
+                </tr>
+                <tr class="align-right" th:each="izakaya : ${izakayaListForm.izakayaList}">
+                	<td><input type="radio" th:id="'id' + ${izakaya.id}" name="no" th:value="${izakaya.id}"></td>
+					<td th:text="${izakaya.name}"></td>
+					<td th:text="${izakaya.tele}"></td>
+					<td th:text="${izakaya.address}"></td>
+					<td th:text="${T(com.example.izakaya.util.Area).getEnumFromNo(izakaya.area).name}"></td>
+					<td th:text="${T(com.example.izakaya.util.Genre).getEnumFromNo(izakaya.genre).name}"></td>
+					<td th:text="${izakaya.max_num_of_people}"></td>
+					<td th:text="${izakaya.price}"></td>
+					<td th:text="${izakaya.opening_time}"></td>
+					<td th:text="${izakaya.closing_time}"></td>
+					<td th:text="${izakaya.holiday}"></td>
+					<td th:text="${izakaya.url}"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="align-center">
+            <a class="button" th:href="@{${T(com.example.izakaya.util.Constants).URL_MANAGE + T(com.example.izakaya.util.Constants).URL_TO_IZAKAYA_UPDATE}+{id}(id=${category.idCategory})}" onclick="toUpdateView()" target="main">修正</a>
+            <a class="button" href="#" onclick="confirmDio()" target="main">削除</a>
+        </div>
+    </body>
+</html>

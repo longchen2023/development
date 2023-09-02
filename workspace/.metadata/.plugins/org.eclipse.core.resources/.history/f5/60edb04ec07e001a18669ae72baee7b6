@@ -1,0 +1,28 @@
+.iframe-head{
+	width: 100%;
+	height: 20%;
+	border-color:#B3D4F0;
+}
+.iframe-menu1{
+	height: 30%;
+	border-color:#B3D4F0;
+}
+.iframe-menu2{
+	height: 70%;
+	border-color:#B3D4F0;
+}
+.iframe-main{
+	height: 100%;
+	border-color:#B3D4F0;
+}
+.div-menu_left{
+	position: relative;
+	float:left;
+	height: 80%;
+	width: 200px;
+}
+.div-menu_right{
+	position: relative;
+	float:right;
+	width:calc(100% - 200px)
+}

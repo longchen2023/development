@@ -1,0 +1,32 @@
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="/css/common.css" th:href="@{/css/common.css}" rel="stylesheet"></link>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script type="text/javascript" src="/js/common.js" th:src="@{/js/common.js}"></script>
+    </head>
+    <body class="body-all body-menu2">
+        <h2 class="title-content">管理画面</h2>
+        <div class="menu2-text-align-center">
+			<ul>
+        		<li>
+            		<a th:href="@{${T(com.example.izakaya.util.Constants).URL_MANAGE + T(com.example.izakaya.util.Constants).URL_TO_IZAKAYA_LIST}}" target="main">一覧へ</a>
+        		</li>
+        		<li>
+            		<a th:href="@{${T(com.example.izakaya.util.Constants).URL_MANAGE + T(com.example.izakaya.util.Constants).URL_TO_IZAKAYA_REGISTER}}" target="main">新規登録</a>
+        		</li>
+        		<li>
+            		<a th:href="@{${T(com.example.izakaya.util.Constants).URL_MANAGE + T(com.example.izakaya.util.Constants).URL_TO_IZAKAYA_COMMENT_TARGET}}" target="main">コメントの削除</a>
+        		</li>
+        		<li>
+            		<a th:href="@{${T(com.example.izakaya.util.Constants).URL_MANAGE + T(com.example.izakaya.util.Constants).URL_TO_PASSWORD_UPDATE}}" target="main">パスワード変更</a>
+        		</li>
+        		<li>
+        		<form action="#" th:action="@{${T(com.example.izakaya.util.Constants).URL_MANAGE + T(com.example.izakaya.util.Constants).URL_LOGIN_OUT}}" name="loginOutForm" method="post">
+            		<input class="" type="submit" value="ログアウト" />
+            	</form>
+        		</li>
+        	</ul>
+        </div>
+    </body>
+</html>

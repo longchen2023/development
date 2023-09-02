@@ -1,0 +1,63 @@
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="/css/common.css" th:href="@{/css/common.css}" rel="stylesheet"></link>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script>
+        $(document).ready(function(){
+      	  
+      	　//削除ボタンの事件
+      	  $("#deleteButton").click(function(){
+      		  var checkedNo = $("input:[name="id"]:checked").val(); 
+                if(checkedNo ==null || checkedNo ==''){
+              	  alert("削除したいコメントを選択してください。");
+              	  return false;
+                } 
+                if(confirm("当該データを削除してもよろしいですか。")){
+              	  $("#no").val(checkedNo);
+              	  $("#izakayaForm").submit();
+              	  return false;
+                }
+          	  return false;
+      	  });
+      	});
+        </script> 
+    </head>
+    <body class="body-all body-menu2">
+    	<form action="#" th:action="@{${T(com.example.izakaya.util.Constants).URL_MANAGE + T(com.example.izakaya.util.Constants).URL_IZAKAYA_COMMENT_DELETE}}"  name="izakayaDeleteCommentForm" method="post">
+        <div>
+            <table border="1" class="align-center">
+                <tr class="align-right table_tr-color-blue">
+                    <td>
+                        <span></span>
+                    </td>
+                    <td class="table_td-width-200">
+                        <span>名前</span>
+                    </td>
+                    <td class="table_td-width-200">
+                        <span>評価</span>
+                    </td>
+                    <td class="table_td-width-200">
+                        <span>コメント</span>
+                    </td>
+                    <td class="table_td-width-200">
+                        <span>日時</span>
+                    </td>
+                  
+                </tr>
+                <tr class="align-right" th:each="izakayaComment : ${izakayaCommentListForm.commentList}">
+                	<td><input type="checkbox"  name="id" th:value="${izakayaComment.id}"></td>
+                	<td th:text="${izakayaComment.name}"></td>
+                	<td th:text="${T(com.example.izakaya.util.Assessment).getEnumFromLevel(izakayaComment.assessment).name}"></td>
+               		<td th:text="${izakayaComment.content}"></td>
+               		<td th:text="${izakayaComment.register_time}"></td>
+                </tr>
+            </table>
+        </div>
+        <div >
+        <input type="hidden" id="izakayaId" name="izakayaId" th:value="${izakayaId}"/>
+        <input id="deleteButton" class="button" type="submit" value="削除" />
+        </div>
+        </form>
+    </body>
+</html>

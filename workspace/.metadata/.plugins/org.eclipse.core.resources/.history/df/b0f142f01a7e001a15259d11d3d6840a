@@ -1,0 +1,148 @@
+package com.example.izakaya.controller;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import com.example.izakaya.model.IzakayaSession;
+import com.example.izakaya.util.Constants;
+
+@RunWith(JUnitPlatform.class)
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+public class IzakayaIndexControllerTests {
+
+    private MockMvc mockMvc;
+    
+    @InjectMocks
+    private IzakayaIndexController target;
+    
+    //ユーザID
+	public static final String USER_ID_TEST_1 = "test1"; 
+    //ユーザpassword
+	public static final String USER_TEST_1_PASSWORD = "zxcv1234"; 
+    //ログイン状態:true
+	public static final boolean LOGIN_STATUS_TRUE = true;
+    //ログイン状態:false
+	public static final boolean LOGIN_STATUS_FALSE = false; 
+
+	@Before
+    public void setUp() throws Exception {
+        mockMvc = MockMvcBuilders.standaloneSetup(target).build();
+    } 
+
+    /**
+     * indexのテスト.
+     * @throws Exception
+     */
+    @Test
+    public void testIndex() throws Exception {
+        mockMvc.perform(get(Constants.URL_INDEX))
+            .andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_INDEX));
+    }
+    
+    /**
+     * showHeadのテスト.
+     * @throws Exception
+     */
+    @Test
+    public void testShowHead() throws Exception {
+        mockMvc.perform(get(Constants.URL_INDEX + Constants.URL_HEAD))
+            .andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_HEAD));
+    }
+    
+    /**
+     * showMenuofTopのテスト.
+     * @throws Exception
+     */
+    @Test
+    public void testShowMenuofTop() throws Exception {
+        mockMvc.perform(get(Constants.URL_INDEX + Constants.URL_MENU_TOP))
+            .andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_MENU_TOP));
+    }
+    
+    /**
+     * showBlankのテスト.
+     * @throws Exception
+     */
+    @Test
+    public void testShowBlank() throws Exception {
+        mockMvc.perform(get(Constants.URL_INDEX + Constants.URL_BLANK))
+            .andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_BLANK));
+    }
+    
+    /**
+     * showMenuOfLoginのテスト.
+     * @throws Exception
+     */
+    @Test
+    public void testShowMenuOfLogin() throws Exception {
+    	//ログインしていない場合
+        mockMvc.perform(get(Constants.URL_INDEX + Constants.URL_MENU_LOGIN))
+            .andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_MENU_LOGIN));
+        
+    	//ログインした場合 
+        mockMvc.perform(get(Constants.URL_INDEX + Constants.URL_MENU_LOGIN).
+        		sessionAttr(Constants.IZAKAYA_SESSION, setLoginInfo(USER_ID_TEST_1,USER_TEST_1_PASSWORD,LOGIN_STATUS_FALSE)))
+        		.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_MENU_LOGIN));
+        
+    	//ログインした場合 
+        mockMvc.perform(get(Constants.URL_INDEX + Constants.URL_MENU_LOGIN).
+        		sessionAttr(Constants.IZAKAYA_SESSION, setLoginInfo(USER_ID_TEST_1,USER_TEST_1_PASSWORD,LOGIN_STATUS_TRUE)))
+        		.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_MENU_MANAGE));
+    }
+    
+    /**
+     * shouMainのテスト.
+     * @throws Exception
+     */
+    @Test
+    public void testShouMain() throws Exception {
+      	//ログインしていない場合
+        mockMvc.perform(get(Constants.URL_INDEX + Constants.URL_MAIN))
+        .andExpect(status().isFound()).andExpect(redirectedUrl(Constants.URL_SEARCH + Constants.URL_TO_IZAKAYA_SEARCH));
+        
+    	//ログインした場合 
+        mockMvc.perform(get(Constants.URL_INDEX + Constants.URL_MAIN).
+        		sessionAttr(Constants.IZAKAYA_SESSION, setLoginInfo(USER_ID_TEST_1,USER_TEST_1_PASSWORD,LOGIN_STATUS_FALSE)))
+		.andExpect(status().isFound()).andExpect(redirectedUrl(Constants.URL_SEARCH + Constants.URL_TO_IZAKAYA_SEARCH));
+        
+    	//ログインした場合 
+        mockMvc.perform(get(Constants.URL_INDEX + Constants.URL_MAIN).
+        		sessionAttr(Constants.IZAKAYA_SESSION, setLoginInfo(USER_ID_TEST_1,USER_TEST_1_PASSWORD,LOGIN_STATUS_TRUE)))
+        		.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_MAIN));
+    }
+    
+    
+    
+    /**
+	 * ログイン情報を取得する.
+	 * 
+	 * @param id ユーザID
+	 * @param password password
+	 * @param loginStatus ログインステータス
+	 * @return ログイン情報
+	 */
+	private IzakayaSession setLoginInfo(String id,String password, boolean loginStatus) {
+		final IzakayaSession izakayaSession = new IzakayaSession();
+		izakayaSession.setUserId(id);
+		izakayaSession.setPassword("zxcv1234");
+		izakayaSession.setLogin(loginStatus);
+		return izakayaSession;
+	}
+
+}

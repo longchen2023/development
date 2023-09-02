@@ -1,0 +1,570 @@
+package com.example.izakaya.controller;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
+import java.util.ArrayList;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import com.example.izakaya.entity.IzakayaInfo;
+import com.example.izakaya.model.IzakayaDeleteCommentForm;
+import com.example.izakaya.model.IzakayaForm;
+import com.example.izakaya.model.IzakayaSession;
+import com.example.izakaya.model.PasswordForm;
+import com.example.izakaya.model.UserForm;
+import com.example.izakaya.service.IzakayaManageService;
+import com.example.izakaya.util.Area;
+import com.example.izakaya.util.Constants;
+import com.example.izakaya.util.Genre;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class IzakayaManageControllerTests {
+
+    private MockMvc mockMvc;
+    
+    @MockBean
+    private IzakayaManageService izakayaManageServiceMock;
+    
+	@Autowired
+	private IzakayaManageController target;
+    
+    //ユーザID
+	public static final String USER_ID_TEST_1 = "test1"; 
+    //ユーザpassword
+	public static final String USER_TEST_1_PASSWORD = "zxcv1234"; 
+    //ユーザpassword
+	public static final String USER_TEST_1_NOT_CORRECT_PASSWORD = "zxcv123433"; 
+    //ユーザID(not corrent)
+	public static final String USER_ID_NOT_CORRECT = "あ"; 
+    //ユーザpassword(not corrent)
+	public static final String USER_PASSWORD_NOT_CORRECT  = "あ"; 
+    //ログイン状態:true
+	public static final boolean LOGIN_STATUS_TRUE = true;
+    //ログイン状態:false
+	public static final boolean LOGIN_STATUS_FALSE = false; 
+	//居酒屋ID
+	public static final int IZAKAYA_NO_NOT_CORRECT = 0;
+	//居酒屋ID
+	public static final int IZAKAYA_NO = 20000;
+	//居酒屋名称
+	public static final String IZAKAYA_SHOPNAME = "居酒屋";
+	//電話番号
+	public static final String IZAKAYA_TELE = "08080849977";
+	//電話番号
+	public static final String IZAKAYA_TELE_NOT_CORRECT = "ああああ";
+	//地域
+	public static final String IZAKAYA_AREA = String.valueOf(Area.Morioka.getNo());
+	//ジャンル
+	public static final String IZAKAYA_GENRE = String.valueOf(Genre.JAPANESES_STYLE.getNo());
+	//最大人数
+	public static final String IZAKAYA_MAX_NUM_OF_PEOPLE = "100";
+	//開店時間
+	public static final String IZAKAYA_OPEN_TIME = "0800";
+	//閉店時間
+	public static final String IZAKAYA_CLOSE_TIME = "2000";
+	//値段
+	public static final String IZAKAYA_PRICE = "300";
+	//住所
+	public static final String IZAKAYA_ADDRESS = "越谷レイクタウン";
+	//url
+	public static final String IZAKAYA_URL = "zzzzzzzz";
+	//休日
+	public static final String IZAKAYA_HOLIDAY = "土日";
+	//BLANK
+	public static final String BLANK = "";
+	
+	// 居酒屋ID
+	public static final String IZAKAYA_ID = "23";
+	// 居酒屋コメントID
+	public static final String[] IZAKAYA_IDS = {"100"};
+
+	@Before
+    public void setUp() throws Exception {
+        mockMvc = MockMvcBuilders.standaloneSetup(target).build();
+    } 
+
+    /**
+     * loginのテスト.
+     * @throws Exception
+     */
+    @Test
+    public void testLogin() throws Exception {
+    	
+    	final UserForm userForm = new UserForm();
+    	//正常系（正常に登録）
+    	userForm.setUserId(USER_ID_TEST_1);
+    	userForm.setUserPassword(USER_TEST_1_PASSWORD);
+    	when(izakayaManageServiceMock.checkLoginInfo(Mockito.anyString(),Mockito.anyString())).thenReturn(true);
+        mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_LOGIN_IN).flashAttr(Constants.USER_FORM, userForm))
+            .andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_MENU_MANAGE));
+      	//正常系（入力が間違い）
+    	userForm.setUserId(USER_ID_TEST_1);
+    	userForm.setUserPassword(USER_TEST_1_NOT_CORRECT_PASSWORD);
+    	when(izakayaManageServiceMock.checkLoginInfo(Mockito.anyString(),Mockito.anyString())).thenReturn(false);
+        mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_LOGIN_IN).flashAttr(Constants.USER_FORM, userForm))
+            .andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_MENU_LOGIN));
+        //正常系（バリデーションチェック）
+    	userForm.setUserId(USER_ID_NOT_CORRECT);
+    	userForm.setUserPassword(USER_PASSWORD_NOT_CORRECT);
+        mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_LOGIN_IN).flashAttr(Constants.USER_FORM, userForm))
+            .andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_MENU_LOGIN));
+        
+    }
+    
+    
+    /**
+     * loginOutのテスト.
+     * @throws Exception
+     */
+    @Test
+    public void testLoginOut() throws Exception {
+    	
+      	//正常系（ログイン済ではない場合）
+        mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_LOGIN_OUT))
+            .andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_MENU_LOGIN));
+      	//正常系（ログイン済である場合）
+        mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_LOGIN_OUT).sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_TRUE)))
+            .andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_MENU_LOGIN));
+        
+    }
+    
+    
+    /**
+     * showPasswordUpdateのテスト.
+     * @throws Exception
+     */
+    @Test
+    public void testShowPasswordUpdate() throws Exception {
+    	
+		//正常系（ログイン未済）//TODO
+		mockMvc.perform(get(Constants.URL_MANAGE + Constants.URL_TO_PASSWORD_UPDATE))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_MANAGER_PASSWORD_UPDATE));
+		//正常系（ログイン済み）//TODO
+		mockMvc.perform(get(Constants.URL_MANAGE + Constants.URL_TO_PASSWORD_UPDATE)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_FALSE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_MANAGER_PASSWORD_UPDATE));
+		//正常系（ログイン済み）
+		mockMvc.perform(get(Constants.URL_MANAGE + Constants.URL_TO_PASSWORD_UPDATE)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_TRUE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_MANAGER_PASSWORD_UPDATE));
+        
+    }
+    
+    /**
+     * passwordUpdateのテスト.
+     * @throws Exception
+     */
+    @Test
+    public void testPasswordUpdate() throws Exception {
+    	
+    	final PasswordForm passwordForm = new PasswordForm();
+    	//正常系（ログイン未済）//TODO
+    	passwordForm.setUserId(USER_ID_TEST_1);
+    	passwordForm.setOldPassword(USER_TEST_1_PASSWORD);
+    	passwordForm.setNewPassword(USER_TEST_1_PASSWORD);
+    	passwordForm.setNewPasswordConfirm(USER_TEST_1_PASSWORD);
+    	when(izakayaManageServiceMock.checkAndUpdateManageInfo(passwordForm)).thenReturn(true);
+		mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_PASSWORD_UPDATE).flashAttr(Constants.PASSWORD_FORM, passwordForm))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_MANAGER_PASSWORD_UPDATE_RESULT));
+		//正常系（ログイン済み）//TODO
+		when(izakayaManageServiceMock.checkAndUpdateManageInfo(passwordForm)).thenReturn(true);
+		mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_PASSWORD_UPDATE).flashAttr(Constants.PASSWORD_FORM, passwordForm)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_FALSE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_MANAGER_PASSWORD_UPDATE_RESULT));
+		//正常系（ログイン済み、かつ、ログイン情報が正しい）
+		when(izakayaManageServiceMock.checkAndUpdateManageInfo(passwordForm)).thenReturn(true);
+		mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_PASSWORD_UPDATE).flashAttr(Constants.PASSWORD_FORM, passwordForm)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_TRUE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_MANAGER_PASSWORD_UPDATE_RESULT));
+		//正常系（ログイン済み、かつ、ログイン情報が正しくない）
+		passwordForm.setOldPassword(USER_TEST_1_NOT_CORRECT_PASSWORD);
+		when(izakayaManageServiceMock.checkAndUpdateManageInfo(passwordForm)).thenReturn(false);
+		mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_PASSWORD_UPDATE).flashAttr(Constants.PASSWORD_FORM, passwordForm)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_TRUE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_MANAGER_PASSWORD_UPDATE_RESULT));
+		//正常系（バリデーションチェック）
+    	passwordForm.setOldPassword(USER_PASSWORD_NOT_CORRECT);
+    	passwordForm.setNewPassword(USER_PASSWORD_NOT_CORRECT);
+    	passwordForm.setNewPasswordConfirm(USER_PASSWORD_NOT_CORRECT);
+    	when(izakayaManageServiceMock.checkAndUpdateManageInfo(passwordForm)).thenReturn(true);
+		mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_PASSWORD_UPDATE).flashAttr(Constants.PASSWORD_FORM, passwordForm)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_TRUE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_MANAGER_PASSWORD_UPDATE));
+    }
+    
+    
+    /**
+     * showIzakayaListのテスト.
+     * @throws Exception
+     */
+    @Test
+    public void testShowIzakayaList() throws Exception {
+    	
+		//正常系（ログイン未済）//TODO
+    	when(izakayaManageServiceMock.getIzakayaList()).thenReturn(new ArrayList<IzakayaInfo>());
+		mockMvc.perform(get(Constants.URL_MANAGE + Constants.URL_TO_IZAKAYA_LIST))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_LIST));
+		//正常系（ログイン済み）//TODO
+    	when(izakayaManageServiceMock.getIzakayaList()).thenReturn(new ArrayList<IzakayaInfo>());
+		mockMvc.perform(get(Constants.URL_MANAGE + Constants.URL_TO_IZAKAYA_LIST)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_FALSE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_LIST));
+		//正常系（ログイン済み）
+    	when(izakayaManageServiceMock.getIzakayaList()).thenReturn(new ArrayList<IzakayaInfo>());
+		mockMvc.perform(get(Constants.URL_MANAGE + Constants.URL_TO_IZAKAYA_LIST)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_TRUE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_LIST));
+        
+    }
+    
+    
+    /**
+     * showIzakayaRegisterのテスト.
+     * @throws Exception
+     */
+    @Test
+    public void testShowIzakayaRegister() throws Exception {
+    	
+		//正常系（ログイン未済）//TODO
+		mockMvc.perform(get(Constants.URL_MANAGE + Constants.URL_TO_IZAKAYA_REGISTER))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_REGISTER));
+		//正常系（ログイン済み）//TODO
+		mockMvc.perform(get(Constants.URL_MANAGE + Constants.URL_TO_IZAKAYA_REGISTER)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_FALSE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_REGISTER));
+		//正常系（ログイン済み）
+		mockMvc.perform(get(Constants.URL_MANAGE + Constants.URL_TO_IZAKAYA_REGISTER)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_TRUE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_REGISTER));
+        
+    }
+ 
+    
+    /**
+     * registerIzakayaのテスト.
+     * @throws Exception
+     */
+    @Test
+    public void testRegisterIzakaya() throws Exception {
+    	
+    	final IzakayaForm izakayaForm = new IzakayaForm();
+    	//正常系（ログイン未済）//TODO
+    	izakayaForm.setNo(IZAKAYA_NO);
+    	izakayaForm.setShopName(IZAKAYA_SHOPNAME);
+    	izakayaForm.setTele(IZAKAYA_TELE);
+    	izakayaForm.setArea(IZAKAYA_AREA);
+    	izakayaForm.setGenre(IZAKAYA_GENRE);
+    	izakayaForm.setMaxNumOfPeople(IZAKAYA_MAX_NUM_OF_PEOPLE);
+    	izakayaForm.setOpenTime(IZAKAYA_OPEN_TIME);
+    	izakayaForm.setCloseTime(IZAKAYA_CLOSE_TIME);
+    	izakayaForm.setPrice(IZAKAYA_PRICE);
+    	izakayaForm.setAddress(IZAKAYA_ADDRESS);
+    	izakayaForm.setHoliday(IZAKAYA_HOLIDAY);
+    	izakayaForm.setUrl(IZAKAYA_URL);
+		//mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_IZAKAYA_REGISTER).flashAttr(Constants.IZAKAYA_FORM, izakayaForm))
+		//		.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_REGISTER_RESULT));
+		//正常系（ログイン済み）//TODO
+    	when(izakayaManageServiceMock.registerIzakaya(izakayaForm,USER_ID_TEST_1)).thenReturn(true);
+		mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_IZAKAYA_REGISTER).flashAttr(Constants.IZAKAYA_FORM, izakayaForm)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_FALSE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_REGISTER_RESULT));
+		//正常系（ログイン済み、かつ、ログイン情報が正しい）
+    	when(izakayaManageServiceMock.registerIzakaya(izakayaForm,USER_ID_TEST_1)).thenReturn(true);
+		mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_IZAKAYA_REGISTER).flashAttr(Constants.IZAKAYA_FORM, izakayaForm)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_TRUE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_REGISTER_RESULT));
+		//正常系（ログイン済み、かつ、ログイン情報が正しくない）
+    	when(izakayaManageServiceMock.registerIzakaya(izakayaForm,USER_ID_TEST_1)).thenReturn(true);
+		mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_IZAKAYA_REGISTER).flashAttr(Constants.IZAKAYA_FORM, izakayaForm)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_TRUE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_REGISTER_RESULT));
+		//正常系（バリデーションチェック）
+    	izakayaForm.setTele(IZAKAYA_TELE_NOT_CORRECT);
+    	when(izakayaManageServiceMock.registerIzakaya(izakayaForm,USER_ID_TEST_1)).thenReturn(true);
+		mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_IZAKAYA_REGISTER).flashAttr(Constants.IZAKAYA_FORM, izakayaForm)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_TRUE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_REGISTER));
+		//異常系（DB登録失敗）//TODO
+	  	izakayaForm.setGenre(BLANK);
+    	when(izakayaManageServiceMock.registerIzakaya(izakayaForm,USER_ID_TEST_1)).thenReturn(false);
+		mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_IZAKAYA_REGISTER).flashAttr(Constants.IZAKAYA_FORM, izakayaForm)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_TRUE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_REGISTER));
+    }
+    
+    
+    /**
+     * showIzakayaUpdateのテスト.
+     * @throws Exception
+     */
+    @Test
+    public void testShowIzakayaUpdate() throws Exception {
+    	
+		//正常系（ログイン未済）//TODO
+    	when(izakayaManageServiceMock.getIzakayaById(Constants.ATTR_IZAKAYA_ID)).thenReturn(new IzakayaInfo());
+		mockMvc.perform(get(Constants.URL_MANAGE + Constants.URL_TO_IZAKAYA_UPDATE).param(Constants.ATTR_IZAKAYA_ID,
+				IZAKAYA_ID))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_UPDATE));
+		//正常系（ログイン済み）//TODO
+    	when(izakayaManageServiceMock.getIzakayaById(Constants.ATTR_IZAKAYA_ID)).thenReturn(new IzakayaInfo());
+		mockMvc.perform(get(Constants.URL_MANAGE + Constants.URL_TO_IZAKAYA_UPDATE).param(Constants.ATTR_IZAKAYA_ID,
+				IZAKAYA_ID)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_FALSE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_UPDATE));
+		//正常系（ログイン済み）
+    	when(izakayaManageServiceMock.getIzakayaById(Constants.ATTR_IZAKAYA_ID)).thenReturn(new IzakayaInfo());
+		mockMvc.perform(get(Constants.URL_MANAGE + Constants.URL_TO_IZAKAYA_UPDATE).param(Constants.ATTR_IZAKAYA_ID,
+				IZAKAYA_ID)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_TRUE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_UPDATE));
+        
+    }
+    
+    
+    /**
+     * updateIzakayaのテスト.
+     * @throws Exception
+     */
+    @Test
+    public void testUpdateIzakaya() throws Exception {
+    	
+    	final IzakayaForm izakayaForm = new IzakayaForm();
+    	//正常系（ログイン未済）//TODO
+    	izakayaForm.setNo(IZAKAYA_NO);
+    	izakayaForm.setShopName(IZAKAYA_SHOPNAME);
+    	izakayaForm.setTele(IZAKAYA_TELE);
+    	izakayaForm.setArea(IZAKAYA_AREA);
+    	izakayaForm.setGenre(IZAKAYA_GENRE);
+    	izakayaForm.setMaxNumOfPeople(IZAKAYA_MAX_NUM_OF_PEOPLE);
+    	izakayaForm.setOpenTime(IZAKAYA_OPEN_TIME);
+    	izakayaForm.setCloseTime(IZAKAYA_CLOSE_TIME);
+    	izakayaForm.setPrice(IZAKAYA_PRICE);
+    	izakayaForm.setAddress(IZAKAYA_ADDRESS);
+    	izakayaForm.setHoliday(IZAKAYA_HOLIDAY);
+    	izakayaForm.setUrl(IZAKAYA_URL);
+		//mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_IZAKAYA_UPDATE).flashAttr(Constants.IZAKAYA_FORM, izakayaForm))
+		//		.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_UPDATE_RESULT));
+		//正常系（ログイン済み）//TODO
+		mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_IZAKAYA_UPDATE).flashAttr(Constants.IZAKAYA_FORM, izakayaForm)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_FALSE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_UPDATE_RESULT));
+		//正常系（ログイン済み、かつ、ログイン情報が正しい）
+		mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_IZAKAYA_UPDATE).flashAttr(Constants.IZAKAYA_FORM, izakayaForm)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_TRUE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_UPDATE_RESULT));
+		//正常系（ログイン済み、かつ、ログイン情報が正しくない）
+		
+		mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_IZAKAYA_UPDATE).flashAttr(Constants.IZAKAYA_FORM, izakayaForm)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_TRUE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_UPDATE_RESULT));
+		//正常系（バリデーションチェック）
+    	izakayaForm.setTele(IZAKAYA_TELE_NOT_CORRECT);
+		mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_IZAKAYA_UPDATE).flashAttr(Constants.IZAKAYA_FORM, izakayaForm)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_TRUE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_UPDATE));
+		//異常系（DB登録失敗）//TODO
+    	izakayaForm.setGenre(BLANK);
+		mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_IZAKAYA_UPDATE).flashAttr(Constants.IZAKAYA_FORM, izakayaForm)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_TRUE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_UPDATE));
+    }
+    
+    
+    /**
+     * deleteIzakayaのテスト.
+     * @throws Exception
+     */
+    @Test
+    public void testDeleteIzakaya() throws Exception {
+    	
+    	final IzakayaForm izakayaForm = new IzakayaForm();
+    	//正常系（ログイン未済）//TODO
+    	izakayaForm.setNo(IZAKAYA_NO);
+		mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_IZAKAYA_DELETE).flashAttr(Constants.IZAKAYA_FORM, izakayaForm))
+			.andExpect(status().isFound())
+			.andExpect(redirectedUrl( Constants.URL_MANAGE + Constants.URL_TO_IZAKAYA_LIST));
+		//正常系（ログイン済み）//TODO
+		mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_IZAKAYA_DELETE).flashAttr(Constants.IZAKAYA_FORM, izakayaForm)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_FALSE)))
+			.andExpect(status().isFound())
+			.andExpect(redirectedUrl( Constants.URL_MANAGE + Constants.URL_TO_IZAKAYA_LIST));
+		//正常系（ログイン済み、かつ、ログイン情報が正しい）
+		mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_IZAKAYA_DELETE).flashAttr(Constants.IZAKAYA_FORM, izakayaForm)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_TRUE)))
+			.andExpect(status().isFound())
+			.andExpect(redirectedUrl( Constants.URL_MANAGE + Constants.URL_TO_IZAKAYA_LIST));
+		//正常系（ログイン済み、かつ、ログイン情報が正しくない）
+		
+		mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_IZAKAYA_DELETE).flashAttr(Constants.IZAKAYA_FORM, izakayaForm)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_TRUE)))
+			.andExpect(status().isFound())
+			.andExpect(redirectedUrl( Constants.URL_MANAGE + Constants.URL_TO_IZAKAYA_LIST));
+		//正常系（バリデーションチェック）
+		izakayaForm.setNo(IZAKAYA_NO_NOT_CORRECT);
+		mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_IZAKAYA_DELETE).flashAttr(Constants.IZAKAYA_FORM, izakayaForm)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_TRUE)))
+			.andExpect(status().isFound())
+			.andExpect(redirectedUrl( Constants.URL_MANAGE + Constants.URL_TO_IZAKAYA_LIST));
+    }
+    
+    
+    /**
+     * showIzakayaCommentTargetのテスト.
+     * @throws Exception
+     */
+    @Test
+    public void testShowIzakayaCommentTarget() throws Exception {
+    	
+		//正常系（ログイン未済）//TODO
+		mockMvc.perform(get(Constants.URL_MANAGE + Constants.URL_TO_IZAKAYA_COMMENT_TARGET).param(Constants.ATTR_IZAKAYA_ID,
+				IZAKAYA_ID))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_COMMENT_TARGET));
+		//正常系（ログイン済み）//TODO
+		mockMvc.perform(get(Constants.URL_MANAGE + Constants.URL_TO_IZAKAYA_COMMENT_TARGET).param(Constants.ATTR_IZAKAYA_ID,
+				IZAKAYA_ID)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_FALSE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_COMMENT_TARGET));
+		//正常系（ログイン済み）
+		mockMvc.perform(get(Constants.URL_MANAGE + Constants.URL_TO_IZAKAYA_COMMENT_TARGET).param(Constants.ATTR_IZAKAYA_ID,
+				IZAKAYA_ID)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_TRUE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_COMMENT_TARGET));
+        
+    }
+    
+    /**
+     * showIzakayaDetailのテスト.
+     * @throws Exception
+     */
+    @Test
+    public void testShowIzakayaDetail() throws Exception {
+    	
+		// paramIdがnullではない、かつ、ログイン未済の場合
+		mockMvc.perform(get(Constants.URL_MANAGE + Constants.URL_TO_IZAKAYA_COMMENT_DELETE).param(Constants.ATTR_IZAKAYA_ID,
+				IZAKAYA_ID)).andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_COMMENT));
+
+		// paramIdがnullである、かつ、ログイン未済の場合//TODO
+		mockMvc.perform(get(Constants.URL_MANAGE + Constants.URL_TO_IZAKAYA_COMMENT_DELETE)
+				.flashAttr(Constants.ATTR_IZAKAYA_ID, IZAKAYA_ID)).andExpect(status().isOk())
+				.andExpect(view().name(Constants.VIEW_IZAKAYA_COMMENT));
+
+		// paramIdがnullではない、かつ、ログイン済の場合
+		mockMvc.perform(get(Constants.URL_MANAGE + Constants.URL_TO_IZAKAYA_COMMENT_DELETE)
+				.param(Constants.ATTR_IZAKAYA_ID, IZAKAYA_ID).sessionAttr(Constants.IZAKAYA_SESSION,
+						setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_FALSE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_COMMENT));
+
+		// paramIdがnullであるかつ、ログイン済の場合場合
+		mockMvc.perform(get(Constants.URL_MANAGE + Constants.URL_TO_IZAKAYA_COMMENT_DELETE)
+				.flashAttr(Constants.ATTR_IZAKAYA_ID, IZAKAYA_ID).sessionAttr(Constants.IZAKAYA_SESSION,
+						setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_FALSE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_COMMENT));
+		
+		// paramIdがnullであるかつ、ログイン済の場合
+		mockMvc.perform(get(Constants.URL_MANAGE + Constants.URL_TO_IZAKAYA_COMMENT_DELETE)
+				.flashAttr(Constants.ATTR_IZAKAYA_ID, IZAKAYA_ID).sessionAttr(Constants.IZAKAYA_SESSION,
+						setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_FALSE)))
+				.andExpect(status().isOk()).andExpect(view().name(Constants.VIEW_IZAKAYA_COMMENT));
+        
+    }
+    
+    
+    /**
+     * deleteIzakayaCommentのテスト.
+     * @throws Exception
+     */
+    @Test
+    public void testDeleteIzakayaComment() throws Exception {
+    	
+    	final IzakayaDeleteCommentForm izakayaDeleteCommentForm = new IzakayaDeleteCommentForm();
+    	//正常系（ログイン未済）//TODO
+    	izakayaDeleteCommentForm.setIzakayaId(IZAKAYA_ID);
+    	izakayaDeleteCommentForm.setIds(IZAKAYA_IDS);
+		mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_IZAKAYA_COMMENT_DELETE).flashAttr(Constants.IZAKAYA_DELETE_COMMENT_FORM, izakayaDeleteCommentForm))
+			.andExpect(status().isFound())
+			.andExpect(redirectedUrl( Constants.URL_MANAGE + Constants.URL_TO_IZAKAYA_COMMENT_DELETE));
+		//正常系（ログイン済み）//TODO
+		mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_IZAKAYA_COMMENT_DELETE).flashAttr(Constants.IZAKAYA_DELETE_COMMENT_FORM, izakayaDeleteCommentForm)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_FALSE)))
+			.andExpect(status().isFound())
+			.andExpect(redirectedUrl( Constants.URL_MANAGE + Constants.URL_TO_IZAKAYA_COMMENT_DELETE));
+		//正常系（ログイン済み、かつ、ログイン情報が正しい）
+		mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_IZAKAYA_COMMENT_DELETE).flashAttr(Constants.IZAKAYA_DELETE_COMMENT_FORM, izakayaDeleteCommentForm)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_TRUE)))
+			.andExpect(status().isFound())
+			.andExpect(redirectedUrl( Constants.URL_MANAGE + Constants.URL_TO_IZAKAYA_COMMENT_DELETE));
+		//正常系（ログイン済み、かつ、ログイン情報が正しくない）
+		
+		mockMvc.perform(post(Constants.URL_MANAGE + Constants.URL_IZAKAYA_COMMENT_DELETE).flashAttr(Constants.IZAKAYA_FORM, izakayaDeleteCommentForm)
+				.sessionAttr(Constants.IZAKAYA_SESSION,
+				setLoginInfo(USER_ID_TEST_1, USER_TEST_1_PASSWORD, LOGIN_STATUS_TRUE)))
+			.andExpect(status().isFound())
+			.andExpect(redirectedUrl( Constants.URL_MANAGE + Constants.URL_TO_IZAKAYA_COMMENT_DELETE));
+    }
+    
+    
+    /**
+	 * ログイン情報を取得する.
+	 * 
+	 * @param id ユーザID
+	 * @param password password
+	 * @param loginStatus ログインステータス
+	 * @return ログイン情報
+	 */
+	private IzakayaSession setLoginInfo(String id,String password, boolean loginStatus) {
+		final IzakayaSession izakayaSession = new IzakayaSession();
+		izakayaSession.setUserId(id);
+		izakayaSession.setPassword("zxcv1234");
+		izakayaSession.setLogin(loginStatus);
+		return izakayaSession;
+	}
+
+}

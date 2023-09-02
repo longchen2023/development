@@ -1,0 +1,8 @@
+package com.example.izakaya.model;
+
+public class IzakayaListForm {
+	
+	//居酒屋のリスト
+	private List<IzakayaInfo> izakayaList;
+
+}

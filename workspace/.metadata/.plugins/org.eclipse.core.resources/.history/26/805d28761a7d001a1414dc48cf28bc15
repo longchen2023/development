@@ -1,0 +1,51 @@
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="/css/common.css" th:href="@{/css/common.css}" rel="stylesheet"></link>
+    </head>
+    <body class="body-all body-menu2">
+        <form action="#" th:action="@{${T(com.example.izakaya.util.Constants).URL_SEARCH + T(com.example.izakaya.util.Constants).URL_IZAKAYA_SEARCH}}" th:object="${izakayaForm}" name="izakayaForm" method="post">
+        	<table  class="align-center">
+            	<tr class="align-right">
+                	<td>
+                    	<span>予約人数</span>
+                    	<input type="text" id ="shopName"/>
+                	</td>
+            	</tr>
+            	<tr class="align-right">
+                	<td>
+                    	<span>料金範囲</span>
+                    	<input type="text" id ="minAmount"/>
+                	</td>
+                 	<td class="align-center">
+                    	<span>~</span>
+                	</td>
+                	<td>
+                    	<input type="text" id ="maxAmount"/>
+                	</td> 
+            	</tr>
+            	<tr class="align-left">
+                	<td>
+                    	<span>地域名</span>
+                    	<select id="regionNname">
+                        	<option value="盛岡">盛岡</option>
+                        	<option value="滝沢">滝沢</option>
+                    	</select>
+                	</td>
+                	<td>
+                    	<span>ジャンル</span>
+                    	<select id="genre">
+                        	<option value="和">和</option>
+                        	<option value="洋">洋</option>
+                        	<option value="中">中</option>
+                    	</select>
+                	</td>
+             	</tr>
+        	</table>
+        	<div>
+        	<br>
+        	<a class="button" href="izakaya_register_result.html" target="search">検索</a>
+        	</div>
+        </form>
+    </body>
+</html>

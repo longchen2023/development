@@ -1,0 +1,80 @@
+package com.example.izakaya.util;
+
+/**
+ * ジャンルenum.
+ * @author 双江
+ *
+ */
+public enum Gnere {
+
+    JAPANESES_STYLE("和",1),
+	CHINA_STYLE("中",2),
+	WESTERN_STYLE("洋",3);
+	
+	//ジャンル名称
+	private String name;
+	//ジャンル番号
+	private int no;
+
+	/**
+	 * 
+	 * @param name
+	 * @param no
+	 */
+	private Gnere(String name, int no) {
+		this.name=name;
+		this.no=no;
+	}
+	
+	/**
+	 * ジャンル名称より、ジャンルenumを取得する.
+	 * @param name ジャンル名称
+	 * @return ジャンルenum
+	 */
+	public static Gnere getEnumFromName(String name) {
+		if(name == null) {
+			return null;
+		}
+		
+		for(Gnere gnere :Gnere.values()) {
+			if(gnere.getName().equals(name)) {
+				return gnere;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * ジャンルnoより、ジャンルenumを取得する.
+	 * @param no ジャンルno
+	 * @return ジャンルenum
+	 */
+	public static Gnere getEnumFromNo(int no) {
+		
+		for(Gnere gnere :Gnere.values()) {
+			if(gnere.getNo()== no) {
+				return gnere;
+			}
+		}
+		return null;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getNo() {
+		return no;
+	}
+
+	public void setNo(int no) {
+		this.no = no;
+	}
+	
+	
+	
+}

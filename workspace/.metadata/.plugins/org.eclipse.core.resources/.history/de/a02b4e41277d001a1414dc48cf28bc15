@@ -1,0 +1,10 @@
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="/css/common.css" th:href="@{/css/common.css}" rel="stylesheet"></link>
+    </head>
+<frameset rows="25%,75%">
+    <frame th:src="@{${T(com.example.izakaya.util.Constants).URL_SEARCH + T(com.example.izakaya.util.Constants).URL_TO_IZAKAYA_SEARCH}}" name="search" noresize>
+    <frame th:src="@{${T(com.example.izakaya.util.Constants).URL_INDEX + T(com.example.izakaya.util.Constants).URL_BLANK}}" name="result" noresize>
+</frameset>
+</html>

@@ -1,0 +1,39 @@
+package com.example.izakaya.model;
+
+import lombok.Data;
+
+/**
+ * 居酒屋Form.
+ * @author 双江
+ *
+ */
+@Data 
+public class IzakayaForm {
+	
+	//no
+	private int no;
+	//店名
+	private String shopName;
+	//電話番号
+	private String tele;
+	//住所
+	private String address;
+	//地域名
+	private String regionNname;
+	//ジャンル
+	private String genre;
+	//最大人数
+	private String maxNumOfPeople;
+	//料金
+	private String price;
+	//開店時間
+	private String openTime;
+	//閉店時間
+	private String closeTime;
+	//休日
+	private String holiday;
+	//ホームページ
+	private String homePage;
+	
+
+}

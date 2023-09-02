@@ -1,0 +1,65 @@
+package com.example.izakaya.util;
+
+import lombok.Data;
+
+/**
+ * 地域enum.
+ * @author 双江
+ *
+ */
+public enum Area {
+	Morioka("盛岡",1),
+	Takizawa("滝沢",1);
+	
+	//地域名称
+	private String name;
+	//地域番号
+	private int no;
+
+	/**
+	 * 
+	 * @param name
+	 * @param no
+	 */
+	private Area(String name, int no) {
+		this.name=name;
+		this.no=no;
+	}
+	
+	/**
+	 * 地域名称より、地域enumを取得する.
+	 * @param name
+	 * @return
+	 */
+	public static Area getEnumFromName(String name) {
+		if(name == null) {
+			return null;
+		}
+		
+		for(Area area :Area.values()) {
+			if(area.getName().equals(name)) {
+				return area;
+			}
+		}
+		return null;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getNo() {
+		return no;
+	}
+
+	public void setNo(int no) {
+		this.no = no;
+	}
+	
+	
+	
+}

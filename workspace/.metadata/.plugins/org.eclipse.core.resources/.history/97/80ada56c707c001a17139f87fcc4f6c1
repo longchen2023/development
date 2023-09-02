@@ -1,0 +1,43 @@
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="/css/common.css" th:href="@{/css/common.css}" rel="stylesheet"></link>
+    </head>
+    <body class="body-all body-menu2">
+        <h2 class="title-content">パスワード変更</h2>
+        <div class="align-right">
+        <form action="#" th:action="@{${T(com.example.izakaya.util.Constants).URL_MANAGE + T(com.example.izakaya.util.Constants).URL_LOGIN_IN}}" th:object="${userForm}" name="userForm" method="post">
+        	<table class="table_align_centr">
+            	<tr class="align-right">
+                	<td>
+                    	<span>ID</span>
+                    	<input type="text" id ="userId"/>
+                	</td>
+            	</tr>
+            	<tr class="align-right">
+                	<td>
+                    	<span>旧パスワード</span>
+                    	<input type="text" id ="oldPassword"/>
+                	</td>
+            	</tr>
+            	<tr class="align-right">
+                	<td>
+                    	<span>新しいパスワード</span>
+                    	<input type="text" id ="newPassword"/>
+                	</td>
+            	</tr>
+            	<tr class="align-right">
+                	<td>
+                    	<span>新しいパスワード（確認用）</span>
+                    	<input type="text" id ="newPasswordConfirm"/>
+                	</td>
+            	</tr>
+        	</table>
+        </form>
+        </div>
+        <div class="menu2-text-align-center">
+        </br></br></br>
+        <a class="button" href="manager_password_update_result.html" target="main">登録</a>
+        </div>
+    </body>
+</html>

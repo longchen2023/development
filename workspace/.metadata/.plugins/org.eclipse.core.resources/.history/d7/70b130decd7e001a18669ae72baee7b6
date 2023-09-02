@@ -1,0 +1,7 @@
+$(document).ready(function(){
+	  //修正ボタンの事件
+	  $(".menuButton").click(function(){
+		  $(".menuButton").addClass("active");
+		  
+	  });
+});

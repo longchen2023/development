@@ -1,0 +1,32 @@
+$(document).ready(function(){
+	  //修正ボタンの事件
+	  $("li").click(function(){
+		  
+		  $("li").each(function(index){
+		        $(this).removeClass("active");
+		      })   
+		  $(this).addClass("active");
+		  
+		  $("#ifm").contents().find("#btnOk").click();
+	  });
+	  
+	  $("li",document.frames("menu1").document).click(function(){
+		  
+		  $("li").each(function(index){
+		        $(this).removeClass("active");
+		      })   
+		  $(this).addClass("active");
+		  
+		  $("#ifm").contents().find("#btnOk").click();
+	  });
+	  $("li",document.frames("menu2").document).click(function(){
+		  
+		  $("li").each(function(index){
+		        $(this).removeClass("active");
+		      })   
+		  $(this).addClass("active");
+		  
+		  $("#ifm").contents().find("#btnOk").click();
+	  });
+	  
+});

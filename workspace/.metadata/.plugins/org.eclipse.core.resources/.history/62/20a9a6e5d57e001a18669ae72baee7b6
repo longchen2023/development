@@ -1,0 +1,18 @@
+$(document).ready(function(){
+	  $("li").click(function(){
+		  var x = window.parent.document.getElementById("menu2");  
+          var right = (x.contentWindow || x.contentDocument);  
+          if(right.document){  
+              right = right.document;  
+          }
+          var lis = right.getElementsByTagName("li");
+          for(var i = 0; i<lis.length; i++){
+        	  lis.item(i).classList.add("active");
+          }
+          
+		  $("li").each(function(index){
+		        $(this).removeClass("active");
+		      })   
+		  $(this).addClass("active");
+	  });  
+});
